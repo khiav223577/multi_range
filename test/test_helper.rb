@@ -5,3 +5,10 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'multi_range'
 
 require 'minitest/autorun'
+
+def assert_before_and_after(test_proc, subject_proc, expected_value)
+  before = test_proc.call
+  subject_proc.call
+  after = test_proc.call
+  assert_equal expected_value, { before: before, after: after }
+end

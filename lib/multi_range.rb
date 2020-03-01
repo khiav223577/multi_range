@@ -6,6 +6,29 @@ class MultiRange
     @ranges = ranges
   end
 
+  def -(other_range)
+    new_ranges = @ranges.clone
+
+    return MultiRange.new(new_ranges) if new_ranges.empty?
+    return MultiRange.new(new_ranges) if other_range.min > @ranges.last.max # 大於最大值
+    return MultiRange.new(new_ranges) if other_range.max < @ranges.first.min # 小於最小值
+
+    @ranges.each_with_index do |range, idx|
+      next if other_range.min > range.max # 大於這個 range
+      break if other_range.max < range.min # 小於這個 range
+
+      sub_ranges = [
+        range.min...other_range.min,
+        (other_range.max + 1)..range.max,
+      ]
+
+      new_ranges[idx, 1] = sub_ranges.select{|s| s.any? }
+      break if other_range.max <= range.max # 沒有超過一個 range 的範圍
+    end
+
+    return MultiRange.new(new_ranges)
+  end
+
   def sample
     range = RouletteWheelSelection.sample(@ranges.map{|s| [s, s.size] }.to_h)
     return nil if range == nil

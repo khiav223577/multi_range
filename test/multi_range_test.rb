@@ -22,7 +22,8 @@ class MultiRangeTest < Minitest::Test
   end
 
   def test_sample
+    srand(437598)
     assert_equal 41, @degree_range.sample
-    assert_equal nil, @empty_range.sample
+    assert_nil @empty_range.sample
   end
 end
