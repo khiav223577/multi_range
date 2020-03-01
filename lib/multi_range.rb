@@ -51,7 +51,7 @@ class MultiRange
   def sample
     range = RouletteWheelSelection.sample(@ranges.map{|s| [s, s.size] }.to_h)
     return nil if range == nil
-    return rand(range)
+    return rand(range.max - range.min) + range.min
   end
 
   def size
