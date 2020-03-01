@@ -14,28 +14,28 @@ class MultiRange
     @ranges = ranges
   end
 
-  def -(other_range)
+  def -(other)
     new_ranges = @ranges.clone
 
     return MultiRange.new(new_ranges) if new_ranges.empty?
-    return MultiRange.new(new_ranges) if other_range.min > @ranges.last.max # 大於最大值
-    return MultiRange.new(new_ranges) if other_range.max < @ranges.first.min # 小於最小值
+    return MultiRange.new(new_ranges) if other.min > @ranges.last.max # 大於最大值
+    return MultiRange.new(new_ranges) if other.max < @ranges.first.min # 小於最小值
 
     changed_size = 0
     @ranges.each_with_index do |range, idx|
-      next if other_range.min > range.max # 大於這個 range
-      break if other_range.max < range.min # 小於這個 range
+      next if other.min > range.max # 大於這個 range
+      break if other.max < range.min # 小於這個 range
 
       sub_ranges = [
-        range.min...other_range.min,
-        (other_range.max + 1)..range.max,
+        range.min...other.min,
+        (other.max + 1)..range.max,
       ]
 
       sub_ranges.select!{|s| s.any? }
 
       new_ranges[idx + changed_size, 1] = sub_ranges
       changed_size += sub_ranges.size - 1
-      break if other_range.max <= range.max # 沒有超過一個 range 的範圍
+      break if other.max <= range.max # 沒有超過一個 range 的範圍
     end
 
     return MultiRange.new(new_ranges)
