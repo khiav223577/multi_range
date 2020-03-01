@@ -4,7 +4,6 @@ class MultiRangeTest < Minitest::Test
   def setup
     @degree_range = MultiRange.new([0...360])
     @empty_range = MultiRange.new([])
-    srand(437598)
   end
 
   def test_that_it_has_a_version_number
