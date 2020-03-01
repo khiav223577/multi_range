@@ -26,12 +26,12 @@ class MultiRange
       next if other.min > range.max # 大於這個 range
       break if other.max < range.min # 小於這個 range
 
-      sub_ranges = [
-        range.min...other.min,
-        (other.max + 1)..range.max,
-      ]
+      sub_range1 = range.min...other.min
+      sub_range2 = (other.max + 1)..range.max
 
-      sub_ranges.select!{|s| s.any? }
+      sub_ranges = []
+      sub_ranges << sub_range1 if sub_range1.any?
+      sub_ranges << sub_range2 if sub_range2.any?
 
       new_ranges[idx + changed_size, 1] = sub_ranges
       changed_size += sub_ranges.size - 1
