@@ -1,3 +1,3 @@
-module MultiRange
+class MultiRange
   VERSION = '0.0.1'
 end
