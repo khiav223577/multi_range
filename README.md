@@ -1,10 +1,10 @@
-# gem_template
+# MultiRange
 
-[![Gem Version](https://img.shields.io/gem/v/gem_template.svg?style=flat)](http://rubygems.org/gems/gem_template)
-[![Build Status](https://travis-ci.org/khiav223577/gem_template.svg?branch=master)](https://travis-ci.org/khiav223577/gem_template)
-[![RubyGems](http://img.shields.io/gem/dt/gem_template.svg?style=flat)](http://rubygems.org/gems/gem_template)
-[![Code Climate](https://codeclimate.com/github/khiav223577/gem_template/badges/gpa.svg)](https://codeclimate.com/github/khiav223577/gem_template)
-[![Test Coverage](https://codeclimate.com/github/khiav223577/gem_template/badges/coverage.svg)](https://codeclimate.com/github/khiav223577/gem_template/coverage)
+[![Gem Version](https://img.shields.io/gem/v/multi_range.svg?style=flat)](http://rubygems.org/gems/multi_range)
+[![Build Status](https://travis-ci.org/khiav223577/multi_range.svg?branch=master)](https://travis-ci.org/khiav223577/multi_range)
+[![RubyGems](http://img.shields.io/gem/dt/multi_range.svg?style=flat)](http://rubygems.org/gems/multi_range)
+[![Code Climate](https://codeclimate.com/github/khiav223577/multi_range/badges/gpa.svg)](https://codeclimate.com/github/khiav223577/multi_range)
+[![Test Coverage](https://codeclimate.com/github/khiav223577/multi_range/badges/coverage.svg)](https://codeclimate.com/github/khiav223577/multi_range/coverage)
 
 ## Supports
 - Ruby 2.2 ~ 2.7
@@ -15,7 +15,7 @@
 Provides cross-rails methods for you to upgrade rails, backport features, create easy-to-maintain gems, and so on.
 
 ```ruby
-gem 'gem_template'
+gem 'multi_range'
 ```
 
 And then execute:
@@ -24,7 +24,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install gem_template
+    $ gem install multi_range
 
 ## Usage
 
@@ -37,7 +37,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/khiav223577/gem_template. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/khiav223577/multi_range. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License
