@@ -657,7 +657,7 @@ Style/HashSyntax:
                  Prefer Ruby 1.9 hash syntax { a: 1, b: 2 } over 1.8 syntax
                  { :a => 1, :b => 2 }.
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#hash-literals'
-  Enabled: true
+  Enabled: false # wants to support ruby 1.8
 
 Style/IfUnlessModifier:
   Description: >-
