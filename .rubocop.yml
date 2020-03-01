@@ -1120,7 +1120,7 @@ Style/SymbolLiteral:
 
 Style/SymbolProc:
   Description: 'Use symbols as procs instead of blocks when possible.'
-  Enabled: true
+  Enabled: false # wants to support ruby 1.8
 
 Layout/Tab:
   Description: 'No hard tabs.'
