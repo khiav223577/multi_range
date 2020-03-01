@@ -28,6 +28,8 @@ Or install it yourself as:
 ## Usage
 
 Like `Range`, but interact with a group of ranges.
+
+### Sample
 ```rb
 multi_range = MultiRange.new([1..5, 10..12])
 multi_range.sample
@@ -35,7 +37,6 @@ multi_range.sample
 ```
 
 ### Range Difference
-
 ```rb
 multi_range = MultiRange.new([1..10])
 multi_range -= 5..7
