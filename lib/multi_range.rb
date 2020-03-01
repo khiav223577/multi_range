@@ -3,8 +3,15 @@ require 'roulette-wheel-selection'
 
 if not Array.method_defined?(:sum)
   warn "Please backports Array#sum method to use multi_range gem.\n" \
-       "You can use backports gem and add this line in your program:\n" \
+       "You can use backports gem and add the following lines to your program:\n" \
        "require 'backports/2.4.0/enumerable/sum'"
+end
+
+if not Range.method_defined?(:size)
+  warn "Please backports Range#size method to use multi_range gem.\n" \
+       "You can use backports gem and add the following lines to your program:\n" \
+       "require 'backports/1.9.2/float/infinity'\n" \
+       "require 'backports/2.0.0/range/size'"
 end
 
 class MultiRange
