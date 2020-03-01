@@ -14,6 +14,12 @@ if not Range.method_defined?(:size)
        "require 'backports/2.0.0/range/size'"
 end
 
+if not Enumerable.method_defined?(:to_h)
+  warn "Please backports Enumerable#to_h method to use multi_range gem.\n" \
+       "You can use backports gem and add the following lines to your program:\n" \
+       "require 'backports/2.1.0/enumerable/to_h'"
+end
+
 class MultiRange
   attr_reader :ranges
 
