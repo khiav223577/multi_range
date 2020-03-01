@@ -27,7 +27,7 @@ Or install it yourself as:
 
 ## Usage
 
-Like `Range`, but interact with a group of ranges.
+Allow you to manipulate a group of ranges.
 
 ### Sample
 ```rb
