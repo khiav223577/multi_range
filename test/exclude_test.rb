@@ -4,6 +4,7 @@ class ExcludeTest < Minitest::Test
   def setup
     @degree_range = MultiRange.new([0...360])
     @empty_range = MultiRange.new([])
+    @multi_range = MultiRange.new([0..100, 200..300, 500..600])
   end
 
   def test_empty_range
@@ -48,6 +49,15 @@ class ExcludeTest < Minitest::Test
       proc{ @degree_range -= -30..400 },
       before: [0...360],
       after: [],
+    )
+  end
+
+  def test_multi_range
+    assert_before_and_after(
+      proc{ @multi_range.instance_variable_get(:@ranges) },
+      proc{ @multi_range -= 50..550 },
+      before: [0..100, 200..300, 500..600],
+      after: [0...50, 551..600],
     )
   end
 end
