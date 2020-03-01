@@ -225,7 +225,7 @@ Metrics/CyclomaticComplexity:
                  of test cases needed to validate a method.
   Enabled: true
 
-Metrics/LineLength:
+Layout/LineLength:
   Description: 'Limit lines to 120 characters.'
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#80-character-limits'
   Max: 120
@@ -289,7 +289,7 @@ Performance/ReverseEach:
   Reference: 'https://github.com/JuanitoFatas/fast-ruby#enumerablereverseeach-vs-enumerablereverse_each-code'
   Enabled: true
 
-Performance/Sample:
+Style/Sample:
   Description: >-
                   Use `sample` instead of `shuffle.first`,
                   `shuffle.last`, and `shuffle[Fixnum]`.
@@ -600,7 +600,7 @@ Style/EndBlock:
 Layout/EndOfLine:
   Description: 'Use Unix-style line endings.'
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#crlf'
-  Enabled: true
+  Enabled: false
 
 Style/EvenOdd:
   Description: 'Favor the use of Fixnum#even? && Fixnum#odd?'
@@ -625,10 +625,10 @@ Layout/FirstArgumentIndentation:
   Description: 'Checks the indentation of the first parameter in a method call.'
   Enabled: true
 
-Style/FlipFlop:
+Lint/FlipFlop:
   Description: 'Checks for flip flops'
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#no-flip-flops'
-  Enabled: true
+  Enabled: false
 
 Style/For:
   Description: 'Checks use of for or each in multiline loops.'
