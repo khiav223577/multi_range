@@ -39,4 +39,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'sqlite3', '~> 1.3'
   spec.add_development_dependency 'minitest', '~> 5.0'
   spec.add_development_dependency 'backports', '~> 3.15.0'
+
+  spec.add_dependency 'roulette-wheel-selection', '~> 1.1.1'
 end
