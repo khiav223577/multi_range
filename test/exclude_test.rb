@@ -12,7 +12,7 @@ class ExcludeTest < Minitest::Test
       proc{ @empty_range.ranges },
       proc{ @empty_range -= 5..10 },
       :before => [],
-      :after => [],
+      :after  => []
     )
   end
 
@@ -21,7 +21,7 @@ class ExcludeTest < Minitest::Test
       proc{ @degree_range.ranges },
       proc{ @degree_range -= 50..120 },
       :before => [0...360],
-      :after => [0...50, 121..359],
+      :after  => [0...50, 121..359]
     )
   end
 
@@ -30,7 +30,7 @@ class ExcludeTest < Minitest::Test
       proc{ @degree_range.ranges },
       proc{ @degree_range -= -10..20 },
       :before => [0...360],
-      :after => [21..359],
+      :after  => [21..359]
     )
   end
 
@@ -39,7 +39,7 @@ class ExcludeTest < Minitest::Test
       proc{ @degree_range.ranges },
       proc{ @degree_range -= 330..400 },
       :before => [0...360],
-      :after => [0...330],
+      :after  => [0...330]
     )
   end
 
@@ -48,7 +48,7 @@ class ExcludeTest < Minitest::Test
       proc{ @degree_range.ranges },
       proc{ @degree_range -= -30..400 },
       :before => [0...360],
-      :after => [],
+      :after  => []
     )
   end
 
@@ -57,7 +57,7 @@ class ExcludeTest < Minitest::Test
       proc{ @multi_range.ranges },
       proc{ @multi_range -= 50..550 },
       :before => [0..100, 200..300, 500..600],
-      :after => [0...50, 551..600],
+      :after  => [0...50, 551..600]
     )
   end
 end
