@@ -15,12 +15,39 @@ class ExcludeTest < Minitest::Test
     )
   end
 
-  def test_when_cover_excluded_range
+  def test_when_full_cover_excluded_range
     assert_before_and_after(
       proc{ @degree_range.instance_variable_get(:@ranges) },
       proc{ @degree_range -= 50..120 },
       before: [0...360],
       after: [0...50, 121..359],
+    )
+  end
+
+  def test_when_right_cover_excluded_range
+    assert_before_and_after(
+      proc{ @degree_range.instance_variable_get(:@ranges) },
+      proc{ @degree_range -= -10..20 },
+      before: [0...360],
+      after: [21..359],
+    )
+  end
+
+  def test_when_left_cover_excluded_range
+    assert_before_and_after(
+      proc{ @degree_range.instance_variable_get(:@ranges) },
+      proc{ @degree_range -= 330..400 },
+      before: [0...360],
+      after: [0...330],
+    )
+  end
+
+  def test_when_not_cover_excluded_range
+    assert_before_and_after(
+      proc{ @degree_range.instance_variable_get(:@ranges) },
+      proc{ @degree_range -= -30..400 },
+      before: [0...360],
+      after: [],
     )
   end
 end
