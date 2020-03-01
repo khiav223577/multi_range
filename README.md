@@ -29,14 +29,14 @@ Or install it yourself as:
 
 Allow you to manipulate a group of ranges.
 
-### Sample
+### Sample a number
 ```rb
 multi_range = MultiRange.new([1..5, 10..12])
 multi_range.sample
 # => equals to [1, 2, 3, 4, 5, 10, 11, 12].sample
 ```
 
-### Range Difference
+### Range difference
 ```rb
 multi_range = MultiRange.new([1..10])
 multi_range -= 5..7
