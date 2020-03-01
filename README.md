@@ -8,7 +8,6 @@
 
 ## Supports
 - Ruby 1.8 ~ 2.7
-- Rails 3.2, 4.2, 5.0, 5.1, 5.2, 6.0
 
 ## Installation
 
@@ -28,6 +27,28 @@ Or install it yourself as:
 
 ## Usage
 
+Like `Range`, but interact with a group of ranges.
+```rb
+multi_range = MultiRange.new([1..5, 10..12])
+multi_range.sample
+# => equals to [1, 2, 3, 4, 5, 10, 11, 12].sample
+```
+
+### Range Difference
+
+```rb
+multi_range = MultiRange.new([1..10])
+multi_range -= 5..7
+multi_range.ranges
+# => [1...5, 8..10]
+```
+
+```rb
+multi_range = MultiRange.new([1..10, 50..70, 80..100])
+multi_range -= 5..85
+multi_range.ranges
+# => [1...5, 86..100]
+```
 
 ## Development
 
