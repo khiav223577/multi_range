@@ -1,12 +1,6 @@
 require 'multi_range/version'
 require 'roulette-wheel-selection'
 
-if not Array.method_defined?(:sum)
-  warn "Please backports Array#sum method to use multi_range gem.\n" \
-       "You can use backports gem and add the following lines to your program:\n" \
-       "require 'backports/2.4.0/enumerable/sum'"
-end
-
 if not Range.method_defined?(:size)
   warn "Please backports Range#size method to use multi_range gem.\n" \
        "You can use backports gem and add the following lines to your program:\n" \
@@ -61,7 +55,7 @@ class MultiRange
   end
 
   def size
-    @ranges.sum{|s| s.size }
+    @ranges.inject(0){|sum, v| sum + v.size }
   end
 
   def any?
