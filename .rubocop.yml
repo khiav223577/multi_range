@@ -657,7 +657,7 @@ Style/HashSyntax:
                  Prefer Ruby 1.9 hash syntax { a: 1, b: 2 } over 1.8 syntax
                  { :a => 1, :b => 2 }.
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#hash-literals'
-  Enabled: true
+  Enabled: false # wants to support ruby 1.8
 
 Style/IfUnlessModifier:
   Description: >-
@@ -1120,7 +1120,7 @@ Style/SymbolLiteral:
 
 Style/SymbolProc:
   Description: 'Use symbols as procs instead of blocks when possible.'
-  Enabled: true
+  Enabled: false # wants to support ruby 1.8
 
 Layout/Tab:
   Description: 'No hard tabs.'
@@ -1142,7 +1142,7 @@ Style/TrailingCommaInArguments:
   # for all parenthesized method calls with arguments.
   Description: 'Checks for trailing comma in parameter lists.'
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#no-trailing-params-comma'
-  EnforcedStyleForMultiline: comma
+  EnforcedStyleForMultiline: no_comma # wants to support ruby 1.8
   Enabled: true
 
 Style/TrailingCommaInArrayLiteral:

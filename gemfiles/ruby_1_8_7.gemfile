@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 group :test do
   gem 'simplecov'
+  gem 'minitest', '~> 5.11.3'
 end
 
 gemspec :path => '../'

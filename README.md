@@ -7,7 +7,7 @@
 [![Test Coverage](https://codeclimate.com/github/khiav223577/multi_range/badges/coverage.svg)](https://codeclimate.com/github/khiav223577/multi_range/coverage)
 
 ## Supports
-- Ruby 2.2 ~ 2.7
+- Ruby 1.8 ~ 2.7
 - Rails 3.2, 4.2, 5.0, 5.1, 5.2, 6.0
 
 ## Installation
