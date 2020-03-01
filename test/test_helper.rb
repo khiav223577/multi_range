@@ -2,6 +2,7 @@ require 'simplecov'
 SimpleCov.start
 
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+require 'backports/2.4.0/enumerable/sum' if not Array.method_defined?(:sum)
 require 'multi_range'
 
 require 'minitest/autorun'

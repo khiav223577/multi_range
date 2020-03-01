@@ -1,6 +1,12 @@
 require 'multi_range/version'
 require 'roulette-wheel-selection'
 
+if not Array.method_defined?(:sum)
+  warn "Please backports Array#sum method to use multi_range gem.\n" \
+       "You can use backports gem and add this line in your program:\n" \
+       "require 'backports/2.4.0/enumerable/sum'"
+end
+
 class MultiRange
   def initialize(ranges) # range 要由小到大排序，且各 range 不能重疊
     @ranges = ranges
