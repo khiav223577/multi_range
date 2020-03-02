@@ -20,11 +20,11 @@ class MultiRange
   attr_reader :ranges
 
   def initialize(ranges) # range 要由小到大排序，且各 range 不能重疊
-    @ranges = ranges.map{|s| s.is_a?(Integer) ? s..s : s }
+    @ranges = ranges.map{|s| s.is_a?(Integer) ? s..s : s }.freeze
   end
 
   def -(other)
-    new_ranges = @ranges.clone
+    new_ranges = @ranges.dup
 
     return MultiRange.new(new_ranges) if new_ranges.empty?
     return MultiRange.new(new_ranges) if other.min > @ranges.last.max # 大於最大值
