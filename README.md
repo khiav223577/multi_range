@@ -53,20 +53,20 @@ multi_range.ranges
 
 #### each
 ```rb
-MultiRange([1..3, 5..6]).each{|s| print s }
-# => 12356
+MultiRange.new([1..3, 6, 8..9]).each{|s| print s }
+# => 123689
 ```
 
 #### map
 ```rb
-MultiRange([1..3, 5..6]).map{|s| s * 2 }
-# => [2, 4, 6, 10, 12]
+MultiRange.new([1..3, 6, 8..9]).map{|s| s * 2 }
+# => [2, 4, 6, 12, 16, 18]
 ```
 
 #### index_with
 ```rb
-MultiRange([1..3, 5..6]).index_with(true)
-# => { 1 => true, 2 => true, 3 => true, 5 => true, 6 => true }
+MultiRange.new([1..3, 6, 8..9]).index_with(true)
+# => { 1 => true, 2 => true, 3 => true, 6 => true, 8 => true, 9 => true }
 ```
 
 
