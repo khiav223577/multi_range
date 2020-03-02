@@ -51,6 +51,27 @@ multi_range.ranges
 # => [1...5, 86..100]
 ```
 
+### Range-like interface
+
+#### each
+```rb
+MultiRange([1..3, 5..6]).each{|s| print s }
+# => 12356
+```
+
+#### map
+```rb
+MultiRange([1..3, 5..6]).map{|s| s * 2 }
+# => [2, 4, 6, 10, 12]
+```
+
+#### index_with
+```rb
+MultiRange([1..3, 5..6]).index_with(true)
+# => { 1 => true, 2 => true, 3 => true, 5 => true, 6 => true }
+```
+
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
