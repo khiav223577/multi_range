@@ -86,4 +86,9 @@ class MultiRange
       range.each{|s| yield(s) }
     end
   end
+
+  def map
+    return to_enum(:map){ size } if !block_given?
+    return each.map{|s| yield(s) }
+  end
 end

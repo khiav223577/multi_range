@@ -26,7 +26,7 @@ class MultiRangeTest < Minitest::Test
     assert_nil @empty_range.sample
   end
 
-  def test_each
+  def test_each_with_block
     array1 = []
     array2 = []
 
@@ -35,9 +35,21 @@ class MultiRangeTest < Minitest::Test
 
     assert_equal [0, 1, 2, 4, 5], array1
     assert_equal [], array2
+  end
 
+  def test_each_with_chaining
     assert_equal [0, 1, 2, 4, 5], @multi_range.each.to_a
     assert_equal [], @empty_range.each.to_a
+  end
+
+  def test_map
+    assert_equal [0, 2, 4, 8, 10], @multi_range.map{|s| s * 2 }
+    assert_equal [], @empty_range.map{|s| s * 2 }
+  end
+
+  def test_map_with_chaining
+    assert_equal [10, 12, 14, 17, 19], @multi_range.map.with_index(10){|s, idx| s + idx }
+    assert_equal [], @empty_range.map.with_index(10){|s, idx| s + idx }
   end
 
   def test_index_with_with_default_value
