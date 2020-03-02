@@ -90,4 +90,14 @@ class MultiRange
   def to_a
     each.to_a
   end
+
+  def min
+    range = @ranges.first
+    return range.min if range
+  end
+
+  def max
+    range = @ranges.last
+    return range.max if range
+  end
 end
