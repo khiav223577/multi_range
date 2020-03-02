@@ -18,3 +18,10 @@ def assert_before_and_after(test_proc, subject_proc, expected_value)
   after = test_proc.call
   assert_equal expected_value, :before => before, :after => after
 end
+
+def expect_to_receive(obj, method, expected_args, return_value, &block)
+  obj.stub(method, proc{|args|
+    assert_equal(expected_args, args)
+    next return_value
+  }, &block)
+end
