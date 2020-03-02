@@ -18,7 +18,7 @@ class MultiRange
   attr_reader :ranges
 
   def initialize(ranges) # range 要由小到大排序，且各 range 不能重疊
-    @ranges = ranges
+    @ranges = ranges.map{|s| s.is_a?(Integer) ? s..s : s }
   end
 
   def -(other)
