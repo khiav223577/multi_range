@@ -51,8 +51,8 @@ class MultiRangeTest < Minitest::Test
   end
 
   def test_map_with_chaining
-    assert_equal [10, 12, 14, 17, 19], @multi_range.map.with_index(10){|s, idx| s + idx }
-    assert_equal [], @empty_range.map.with_index(10){|s, idx| s + idx }
+    assert_equal [0, 2, 4, 7, 9], @multi_range.map.with_index{|s, idx| s + idx }
+    assert_equal [], @empty_range.map.with_index{|s, idx| s + idx }
   end
 
   def test_index_with_with_default_value
@@ -66,7 +66,7 @@ class MultiRangeTest < Minitest::Test
   end
 
   def test_index_with_with_chaining
-    assert_equal({ 0 => 10, 1 => 11, 2 => 12, 4 => 13, 5 => 14 }, @multi_range.index_with.with_index(10).to_h)
-    assert_equal({}, @empty_range.index_with.with_index(10).to_h)
+    assert_equal({ 0 => 0, 1 => 1, 2 => 2, 4 => 3, 5 => 4 }, @multi_range.index_with.with_index.to_h)
+    assert_equal({}, @empty_range.index_with.with_index.to_h)
   end
 end
