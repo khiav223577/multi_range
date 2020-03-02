@@ -61,4 +61,12 @@ class MultiRange
   def any?
     @ranges.any?
   end
+
+  def each
+    return to_enum(:each){ size } if !block_given?
+
+    ranges.each do |range|
+      range.each{|s| yield(s) }
+    end
+  end
 end
