@@ -15,6 +15,8 @@ if not Enumerable.method_defined?(:to_h)
 end
 
 class MultiRange
+  INDEX_WITH_DEFAULT = Object.new
+
   attr_reader :ranges
 
   def initialize(ranges) # range 要由小到大排序，且各 range 不能重疊
@@ -60,6 +62,21 @@ class MultiRange
 
   def any?
     @ranges.any?
+  end
+
+  def index_with(default = INDEX_WITH_DEFAULT)
+    if block_given?
+      fail ArgumentError.new('wrong number of arguments (given 1, expected 0)') if default != INDEX_WITH_DEFAULT
+      result = {}
+      each{|s| result[s] = yield(s) }
+      return result
+    end
+
+    return to_enum(:index_with){ size } if default == INDEX_WITH_DEFAULT
+
+    result = {}
+    each{|s| result[s] = default }
+    return result
   end
 
   def each

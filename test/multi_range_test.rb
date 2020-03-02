@@ -29,10 +29,29 @@ class MultiRangeTest < Minitest::Test
   def test_each
     array1 = []
     array2 = []
+
     @multi_range.each{|s| array1 << s }
     @empty_range.each{|s| array2 << s }
 
     assert_equal [0, 1, 2, 4, 5], array1
     assert_equal [], array2
+
+    assert_equal [0, 1, 2, 4, 5], @multi_range.each.to_a
+    assert_equal [], @empty_range.each.to_a
+  end
+
+  def test_index_with_with_default_value
+    assert_equal({ 0 => 'a', 1 => 'a', 2 => 'a', 4 => 'a', 5 => 'a' }, @multi_range.index_with('a'))
+    assert_equal({}, @empty_range.index_with('a'))
+  end
+
+  def test_index_with_with_block
+    assert_equal({ 0 => 0, 1 => 2, 2 => 4, 4 => 8, 5 => 10 }, @multi_range.index_with{|s| s * 2 })
+    assert_equal({}, @empty_range.index_with{|s| s * 2 })
+  end
+
+  def test_index_with_with_chaining
+    assert_equal({ 0 => 10, 1 => 11, 2 => 12, 4 => 13, 5 => 14 }, @multi_range.index_with.with_index(10).to_h)
+    assert_equal({}, @empty_range.index_with.with_index(10).to_h)
   end
 end
