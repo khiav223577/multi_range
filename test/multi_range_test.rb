@@ -73,4 +73,9 @@ class MultiRangeTest < Minitest::Test
     assert_equal({ 0 => 0, 1 => 1, 2 => 2, 4 => 3, 5 => 4 }, @multi_range.index_with.with_index.to_h)
     assert_equal({}, @empty_range.index_with.with_index.to_h)
   end
+
+  def test_to_a
+    assert_equal [0, 1, 2, 4, 5], @multi_range.to_a
+    assert_equal [], @empty_range.to_a
+  end
 end
