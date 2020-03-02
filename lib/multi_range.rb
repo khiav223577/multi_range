@@ -66,7 +66,7 @@ class MultiRange
 
   def index_with(default = INDEX_WITH_DEFAULT)
     if block_given?
-      fail ArgumentError.new('wrong number of arguments (given 1, expected 0)') if default != INDEX_WITH_DEFAULT
+      fail ArgumentError, 'wrong number of arguments (given 1, expected 0)' if default != INDEX_WITH_DEFAULT
       return map{|s| [s, yield(s)] }.to_h
     end
 

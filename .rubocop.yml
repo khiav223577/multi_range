@@ -887,12 +887,12 @@ Style/SingleLineBlockParams:
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#reduce-blocks'
   Methods:
     - reduce:
-        - acc
-        - elem
+        - sum
+        - v
     - inject:
-        - acc
-        - elem
-  Enabled: true
+        - sum
+        - v
+  Enabled: false
 
 Style/SingleLineMethods:
   Description: 'Avoid single-line methods.'

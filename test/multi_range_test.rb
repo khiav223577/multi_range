@@ -26,7 +26,7 @@ class MultiRangeTest < Minitest::Test
 
   def test_sample
     srand(437598)
-    expect_to_receive(RouletteWheelSelection, :sample, { 4..5 => 2, 0..2 => 3}, 0..2) do
+    expect_to_receive(RouletteWheelSelection, :sample, { 4..5 => 2, 0..2 => 3 }, 0..2) do
       assert_equal 0, @multi_range.sample
     end
 
