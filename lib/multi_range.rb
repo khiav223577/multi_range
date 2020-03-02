@@ -86,4 +86,18 @@ class MultiRange
     return to_enum(:map){ size } if !block_given?
     return each.map{|s| yield(s) }
   end
+
+  def to_a
+    each.to_a
+  end
+
+  def min
+    range = @ranges.first
+    return range.min if range
+  end
+
+  def max
+    range = @ranges.last
+    return range.max if range
+  end
 end
