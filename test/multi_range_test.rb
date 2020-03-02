@@ -10,6 +10,10 @@ class MultiRangeTest < Minitest::Test
     refute_nil ::MultiRange::VERSION
   end
 
+  def test_integer_to_range
+    assert_equal [1..1, 4..6, 9..9], MultiRange.new([1, 4..6, 9]).ranges
+  end
+
   def test_size
     assert_equal 360, @degree_range.size
     assert_equal 0, @empty_range.size
