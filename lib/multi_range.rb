@@ -67,16 +67,11 @@ class MultiRange
   def index_with(default = INDEX_WITH_DEFAULT)
     if block_given?
       fail ArgumentError.new('wrong number of arguments (given 1, expected 0)') if default != INDEX_WITH_DEFAULT
-      result = {}
-      each{|s| result[s] = yield(s) }
-      return result
+      return map{|s| [s, yield(s)] }.to_h
     end
 
     return to_enum(:index_with){ size } if default == INDEX_WITH_DEFAULT
-
-    result = {}
-    each{|s| result[s] = default }
-    return result
+    return map{|s| [s, default] }.to_h
   end
 
   def each
