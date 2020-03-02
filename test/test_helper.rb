@@ -25,3 +25,13 @@ def expect_to_receive(obj, method, expected_args, return_value, &block)
     next return_value
   }, &block)
 end
+
+def assert_frozen_error
+  frozen_class = case
+                 when RUBY_VERSION < '2'   ; TypeError
+                 when RUBY_VERSION < '2.5' ; RuntimeError
+                 else                      ; FrozenError
+                 end
+
+  assert_raises(frozen_class){ yield }
+end

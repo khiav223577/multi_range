@@ -90,8 +90,7 @@ class MultiRangeTest < Minitest::Test
   end
 
   def test_ranges_are_frozen
-    frozen_class = defined?(FrozenError) ? FrozenError : TypeError
-    assert_raises(frozen_class){ @multi_range.ranges << 1 }
-    assert_raises(frozen_class){ @empty_range.ranges << 1 }
+    assert_frozen_error{ @multi_range.ranges << 1 }
+    assert_frozen_error{ @empty_range.ranges << 1 }
   end
 end
