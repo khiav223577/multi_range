@@ -11,8 +11,6 @@
 
 ## Installation
 
-Provides cross-rails methods for you to upgrade rails, backport features, create easy-to-maintain gems, and so on.
-
 ```ruby
 gem 'multi_range'
 ```
