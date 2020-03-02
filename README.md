@@ -69,6 +69,23 @@ MultiRange.new([1..3, 6, 8..9]).index_with(true)
 # => { 1 => true, 2 => true, 3 => true, 6 => true, 8 => true, 9 => true }
 ```
 
+#### min
+```rb
+MultiRange.new([1..3, 6, 8..9]).min
+# => 1
+```
+
+#### max
+```rb
+MultiRange.new([1..3, 6, 8..9]).max
+# => 9
+```
+
+#### to_a
+```rb
+MultiRange.new([1..3, 6, 8..9]).to_a
+# => [1, 2, 3, 6, 8, 9]
+```
 
 ## Development
 
