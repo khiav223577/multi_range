@@ -1,6 +1,6 @@
 ## Change Log
 
-### [upcoming](https://github.com/khiav223577/multi_range/compare/v0.0.2...HEAD) 2020/03/02
+### [v0.0.3](https://github.com/khiav223577/multi_range/compare/v0.0.2...v0.0.3) 2020/03/02
 - [#6](https://github.com/khiav223577/multi_range/pull/6) freeze internal ranges variable (@khiav223577)
 - [#5](https://github.com/khiav223577/multi_range/pull/5) Add min, max, to_a method (@khiav223577)
 
