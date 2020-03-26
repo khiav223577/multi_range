@@ -14,6 +14,14 @@ class MultiRangeTest < Minitest::Test
     assert_equal [1..1, 4..6, 9..9], MultiRange.new([1, 4..6, 9]).ranges
   end
 
+  def test_flatten
+    multi_range = MultiRange.new([1, 2, 4..6, 7, 8..12])
+    assert_equal [1..2, 4..12], multi_range.flatten.ranges
+
+    multi_range = MultiRange.new([1, 2, 3, 4..6, 7, 9, 11..13, 14..16, 17, 19..20])
+    assert_equal [1..7, 9..9, 11..17, 19..20], multi_range.flatten.ranges
+  end
+
   def test_size
     assert_equal 5, @multi_range.size
     assert_equal 0, @empty_range.size
