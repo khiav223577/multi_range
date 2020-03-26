@@ -23,6 +23,28 @@ class MultiRange
     @ranges = ranges.map{|s| s.is_a?(Integer) ? s..s : s }.freeze
   end
 
+  def flatten
+    return if @ranges.size == 0
+
+    origin_ranges = @ranges.dup
+    new_ranges = []
+
+    current_range = origin_ranges.shift
+    origin_ranges.each do |range|
+      next if range.max <= current_range.max
+
+      if current_range.max + 1 < range.min
+        new_ranges << current_range
+        current_range = range
+      else
+        current_range = current_range.min..range.max
+      end
+    end
+
+    new_ranges << current_range
+    return MultiRange.new(new_ranges)
+  end
+
   def -(other)
     new_ranges = @ranges.dup
 

@@ -49,6 +49,13 @@ multi_range.ranges
 # => [1...5, 86..100]
 ```
 
+### Flatten
+```rb
+multi_range = MultiRange.new([1, 2, 4..6, 7, 8..12])
+multi_range.flatten.ranges
+# => [1..2, 4..12]
+```
+
 ### Range-like interface
 
 #### each
