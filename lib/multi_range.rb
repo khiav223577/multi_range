@@ -26,11 +26,11 @@ class MultiRange
   def flatten
     return if @ranges.size == 0
 
-    origin_ranges = @ranges.dup
     new_ranges = []
+    current_range = nil
 
-    current_range = origin_ranges.shift
-    origin_ranges.each do |range|
+    @ranges.each do |range|
+      next current_range = range if current_range == nil
       next if range.max <= current_range.max
 
       if current_range.max + 1 < range.min
