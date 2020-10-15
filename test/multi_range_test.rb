@@ -21,14 +21,14 @@ class MultiRangeTest < Minitest::Test
     assert_equal [12..12, 20..20, 21..21, 24..26, 30..31], MultiRange.new([30..31, 12, 24..26, 21, 20]).ranges
   end
 
-  def test_flatten
-    assert_equal [], @empty_range.flatten.ranges
+  def test_merge_overlaps
+    assert_equal [], @empty_range.merge_overlaps.ranges
 
     multi_range = MultiRange.new([1, 2, 4..6, 7, 8..12])
-    assert_equal [1..2, 4..12], multi_range.flatten.ranges
+    assert_equal [1..2, 4..12], multi_range.merge_overlaps.ranges
 
     multi_range = MultiRange.new([1, 2, 3, 4..6, 7, 9, 11..13, 14..16, 17, 19..20])
-    assert_equal [1..7, 9..9, 11..17, 19..20], multi_range.flatten.ranges
+    assert_equal [1..7, 9..9, 11..17, 19..20], multi_range.merge_overlaps.ranges
   end
 
   def test_size
