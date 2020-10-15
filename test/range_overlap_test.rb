@@ -30,11 +30,23 @@ class RangeOverlapTest < Minitest::Test
     assert_equal true, @degree_range.overlaps?(-30..400)
   end
 
+  def test_when_smaller_and_not_overlap
+    assert_equal false, @degree_range.overlaps?(-30..-10)
+  end
+
+  def test_when_larger_and_not_overlap
+    assert_equal false, @degree_range.overlaps?(370..400)
+  end
+
   def test_multi_range
     assert_equal true, @multi_range.overlaps?(50..550)
   end
 
-  def test_difference_other_multi_range
+  def test_other_multi_range
     assert_equal true, @multi_range.overlaps?(MultiRange.new([50..60, 110..120, 180..550, 700]))
+  end
+
+  def test_other_multi_range_and_not_overlap
+    assert_equal false, @multi_range.overlaps?(MultiRange.new([-10..-5, 105..199, 400, 700..900]))
   end
 end
