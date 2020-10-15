@@ -75,7 +75,7 @@ multi_range.ranges
 ### Flatten
 ```rb
 multi_range = MultiRange.new([1, 2, 4..6, 7, 8..12])
-multi_range.flatten.ranges
+multi_range.merge_overlaps.ranges
 # => [1..2, 4..12]
 ```
 
@@ -147,13 +147,13 @@ MultiRange.new([1..3, 6, 8..9]).size
 ### Warning
 
 The return value may be different when there are some overlapped ranges.
-Call `flatten` if you want to merge overlapped ranges.
+Call `merge_overlaps` if you want to merge overlapped ranges.
 
 ```rb
 MultiRange.new([1..5, 3..6]).to_a
 # => [1, 2, 3, 4, 5, 3, 4, 5, 6] 
 
-MultiRange.new([1..5, 3..6]).flatten.to_a
+MultiRange.new([1..5, 3..6]).merge_overlaps.to_a
 # => [1, 2, 3, 4, 5, 6]
 ```
 
@@ -161,7 +161,7 @@ MultiRange.new([1..5, 3..6]).flatten.to_a
 MultiRange.new([1..5, 3..6]).each{|s| print s }
 # => 123453456
 
-MultiRange.new([1..5, 3..6]).flatten.each{|s| print s }
+MultiRange.new([1..5, 3..6]).merge_overlaps.each{|s| print s }
 # => 123456
 ```
 
@@ -169,7 +169,7 @@ MultiRange.new([1..5, 3..6]).flatten.each{|s| print s }
 MultiRange.new([1..5, 3..6]).map{|s| s * 2 }
 # => [2, 4, 6, 8, 10, 6, 8, 10, 12] 
 
-MultiRange.new([1..5, 3..6]).flatten.map{|s| s * 2 }
+MultiRange.new([1..5, 3..6]).merge_overlaps.map{|s| s * 2 }
 # => [2, 4, 6, 8, 10, 12] 
 ```
 
@@ -177,7 +177,7 @@ MultiRange.new([1..5, 3..6]).flatten.map{|s| s * 2 }
 MultiRange.new([1..5, 3..6]).size
 # => 9
 
-MultiRange.new([1..5, 3..6]).flatten.size
+MultiRange.new([1..5, 3..6]).merge_overlaps.size
 # => 6
 ```
 

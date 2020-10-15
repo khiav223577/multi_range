@@ -25,7 +25,7 @@ class MultiRange
     @ranges = ranges.map{|s| s.is_a?(Integer) ? s..s : s }.sort_by(&:begin).freeze
   end
 
-  def flatten
+  def merge_overlaps
     return MultiRange.new([]) if @ranges.size == 0
 
     new_ranges = []
@@ -82,11 +82,11 @@ class MultiRange
 
   def |(other)
     other_ranges = other.is_a?(MultiRange) ? other.ranges : [other]
-    return MultiRange.new(@ranges + other_ranges).flatten
+    return MultiRange.new(@ranges + other_ranges).merge_overlaps
   end
 
   def overlaps?(other)
-    multi_range = flatten
+    multi_range = merge_overlaps
     return multi_range.size != (multi_range - other).size
   end
 
