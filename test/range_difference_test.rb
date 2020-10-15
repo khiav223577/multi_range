@@ -62,4 +62,13 @@ class RangeDifferenceTest < Minitest::Test
       :after  => [0...50, 551..600]
     )
   end
+
+  def test_difference_other_multi_range
+    assert_before_and_after(
+      proc{ @multi_range.ranges },
+      proc{ @multi_range -= MultiRange.new([50..60, 110..120, 180..550, 700]) },
+      :before => [0..100, 200..300, 500..600],
+      :after  => [0...50, 61..100, 551..600]
+    )
+  end
 end
