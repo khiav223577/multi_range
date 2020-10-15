@@ -22,6 +22,8 @@ class MultiRangeTest < Minitest::Test
   end
 
   def test_flatten
+    assert_equal [], @empty_range.flatten.ranges
+
     multi_range = MultiRange.new([1, 2, 4..6, 7, 8..12])
     assert_equal [1..2, 4..12], multi_range.flatten.ranges
 

@@ -26,7 +26,7 @@ class MultiRange
   end
 
   def flatten
-    return if @ranges.size == 0
+    return MultiRange.new([]) if @ranges.size == 0
 
     new_ranges = []
     current_range = nil
