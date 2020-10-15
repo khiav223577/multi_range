@@ -79,7 +79,7 @@ multi_range.flatten.ranges
 # => [1..2, 4..12]
 ```
 
-### Overlap?
+### Overlaps?
 
 ```rb
 multi_range = MultiRange.new([1..5, 10..15, 20..25])
