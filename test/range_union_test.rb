@@ -60,4 +60,13 @@ class RangeUnionTest < Minitest::Test
       :after  => [0..450, 500..600]
     )
   end
+
+  def test_union_other_multi_range
+    assert_before_and_after(
+      proc{ @multi_range.ranges },
+      proc{ @multi_range |= MultiRange.new([50..60, 110..120, 180..600, 700]) },
+      :before => [0..100, 200..300, 500..600],
+      :after  => [0..100, 110..120, 180..600, 700..700]
+    )
+  end
 end
