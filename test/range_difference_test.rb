@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ExcludeTest < Minitest::Test
+class RangeDifferenceTest < Minitest::Test
   def setup
     @degree_range = MultiRange.new([0...360])
     @empty_range = MultiRange.new([])

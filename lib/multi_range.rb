@@ -72,6 +72,11 @@ class MultiRange
     return MultiRange.new(new_ranges)
   end
 
+  def |(other)
+    other_ranges = other.is_a?(MultiRange) ? other.ranges : [other]
+    return MultiRange.new(@ranges + other_ranges).flatten
+  end
+
   def sample
     range = RouletteWheelSelection.sample(@ranges.map{|s| [s, s.size] }.to_h)
     return nil if range == nil
