@@ -49,6 +49,23 @@ multi_range.ranges
 # => [1...5, 86..100]
 ```
 
+### Range union
+
+```rb
+multi_range = MultiRange.new([1..5])
+multi_range |= 3..8
+multi_range.ranges
+# => [1..8]
+```
+
+```rb
+multi_range = MultiRange.new([1..5, 10..15, 20..25])
+multi_range |= MultiRange.new([3..6, 14..22, 30])
+multi_range.ranges
+# => [1..6, 10..25, 30..30]
+```
+
+
 ### Flatten
 ```rb
 multi_range = MultiRange.new([1, 2, 4..6, 7, 8..12])
