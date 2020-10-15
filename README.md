@@ -49,6 +49,13 @@ multi_range.ranges
 # => [1...5, 86..100]
 ```
 
+```rb
+multi_range = MultiRange.new([1..10, 50..70, 80..100])
+multi_range -= MultiRange.new([5..60, 75..85])
+multi_range.ranges
+# => [1...5, 61..70, 86..100] 
+```
+
 ### Range union
 
 ```rb

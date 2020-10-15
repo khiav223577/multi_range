@@ -48,6 +48,12 @@ class MultiRange
   end
 
   def -(other)
+    if other.is_a?(MultiRange)
+      new_multi_range = dup
+      other.ranges.each{|range| new_multi_range -= range }
+      return new_multi_range
+    end
+
     new_ranges = @ranges.dup
 
     return MultiRange.new(new_ranges) if new_ranges.empty?
