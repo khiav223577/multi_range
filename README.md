@@ -72,12 +72,31 @@ multi_range.ranges
 # => [1..6, 10..25, 30..30]
 ```
 
-
 ### Flatten
 ```rb
 multi_range = MultiRange.new([1, 2, 4..6, 7, 8..12])
 multi_range.flatten.ranges
 # => [1..2, 4..12]
+```
+
+### Overlap?
+
+```rb
+multi_range = MultiRange.new([1..5, 10..15, 20..25])
+multi_range.overlaps?(7..8)
+# => false
+
+multi_range.overlaps?(3..8)
+# => true
+
+multi_range.overlaps?(7..12)
+# => true
+```
+
+```rb
+multi_range = MultiRange.new([1..5, 10..15, 20..25])
+multi_range.overlaps?(MultiRange.new([6..8, 18..22]))
+# => true
 ```
 
 ### Range-like interface
