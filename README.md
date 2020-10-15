@@ -94,6 +94,50 @@ MultiRange.new([1..3, 6, 8..9]).to_a
 # => [1, 2, 3, 6, 8, 9]
 ```
 
+
+#### size
+```rb
+MultiRange.new([1..3, 6, 8..9]).size
+# => 6
+```
+
+### Warning
+
+The return value may be different when there are some overlapped ranges.
+Call `flatten` if you want to merge overlapped ranges.
+
+```rb
+MultiRange.new([1..5, 3..6]).to_a
+# => [1, 2, 3, 4, 5, 3, 4, 5, 6] 
+
+MultiRange.new([1..5, 3..6]).flatten.to_a
+# => [1, 2, 3, 4, 5, 6]
+```
+
+```rb
+MultiRange.new([1..5, 3..6]).each{|s| print s }
+# => 123453456
+
+MultiRange.new([1..5, 3..6]).flatten.each{|s| print s }
+# => 123456
+```
+
+```rb
+MultiRange.new([1..5, 3..6]).map{|s| s * 2 }
+# => [2, 4, 6, 8, 10, 6, 8, 10, 12] 
+
+MultiRange.new([1..5, 3..6]).flatten.map{|s| s * 2 }
+# => [2, 4, 6, 8, 10, 12] 
+```
+
+```rb
+MultiRange.new([1..5, 3..6]).size
+# => 9
+
+MultiRange.new([1..5, 3..6]).flatten.size
+# => 6
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
