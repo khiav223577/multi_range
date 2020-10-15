@@ -74,7 +74,7 @@ class MultiRange
 
   def |(other)
     other_ranges = other.is_a?(MultiRange) ? other.ranges : [other]
-    return MultiRange.new([*@ranges, *other_ranges]).flatten
+    return MultiRange.new(@ranges + other_ranges).flatten
   end
 
   def sample
