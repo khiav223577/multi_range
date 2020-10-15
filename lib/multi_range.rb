@@ -85,6 +85,11 @@ class MultiRange
     return MultiRange.new(@ranges + other_ranges).flatten
   end
 
+  def overlaps?(other)
+    multi_range = flatten
+    return multi_range.size != (multi_range - other).size
+  end
+
   def sample
     range = RouletteWheelSelection.sample(@ranges.map{|s| [s, s.size] }.to_h)
     return nil if range == nil
