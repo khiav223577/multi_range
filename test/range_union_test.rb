@@ -54,6 +54,24 @@ class RangeUnionTest < Minitest::Test
     )
   end
 
+  def test_when_smaller_and_not_overlap
+    assert_before_and_after(
+      proc{ @degree_range.ranges },
+      proc{ @degree_range |= -30..-10 },
+      :before => [0...360],
+      :after  => [-30..-10, 0...360]
+    )
+  end
+
+  def test_when_larger_and_not_overlap
+    assert_before_and_after(
+      proc{ @degree_range.ranges },
+      proc{ @degree_range |= 370..400 },
+      :before => [0...360],
+      :after  => [0...360, 370..400]
+    )
+  end
+
   def test_multi_range
     assert_before_and_after(
       proc{ @multi_range.ranges },
@@ -63,12 +81,21 @@ class RangeUnionTest < Minitest::Test
     )
   end
 
-  def test_union_other_multi_range
+  def test_other_multi_range
     assert_before_and_after(
       proc{ @multi_range.ranges },
       proc{ @multi_range |= MultiRange.new([50..60, 110..120, 180..550, 700]) },
       :before => [0..100, 200..300, 500..600],
       :after  => [0..100, 110..120, 180..600, 700..700]
+    )
+  end
+
+  def test_other_multi_range_and_not_overlap
+    assert_before_and_after(
+      proc{ @multi_range.ranges },
+      proc{ @multi_range |= MultiRange.new([-10..-5, 105..199, 400, 700..900]) },
+      :before => [0..100, 200..300, 500..600],
+      :after  => [-10..-5, 0..100, 105..300, 400..400, 500..600, 700..900]
     )
   end
 end

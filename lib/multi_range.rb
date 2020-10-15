@@ -26,7 +26,7 @@ class MultiRange
   end
 
   def flatten
-    return if @ranges.size == 0
+    return MultiRange.new([]) if @ranges.size == 0
 
     new_ranges = []
     current_range = nil
@@ -83,6 +83,11 @@ class MultiRange
   def |(other)
     other_ranges = other.is_a?(MultiRange) ? other.ranges : [other]
     return MultiRange.new(@ranges + other_ranges).flatten
+  end
+
+  def overlaps?(other)
+    multi_range = flatten
+    return multi_range.size != (multi_range - other).size
   end
 
   def sample
