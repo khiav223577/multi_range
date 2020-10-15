@@ -1,5 +1,8 @@
 ## Change Log
 
+### [v1.1.0](https://github.com/khiav223577/multi_range/compare/v1.0.0...v1.1.0) 2020/10/15
+- [#13](https://github.com/khiav223577/multi_range/pull/13) Rename flatten => merge_overlaps (@khiav223577)
+
 ### [v1.0.0](https://github.com/khiav223577/multi_range/compare/v0.0.4...v1.0.0) 2020/10/15
 - [#12](https://github.com/khiav223577/multi_range/pull/12) Implement #overlaps? (@khiav223577)
 - [#11](https://github.com/khiav223577/multi_range/pull/11) Support difference other multi_range object (@khiav223577)
