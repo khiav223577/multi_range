@@ -34,7 +34,7 @@ multi_range.sample
 # => equals to [1, 2, 3, 4, 5, 10, 11, 12].sample
 ```
 
-### Range difference
+### Difference of ranges
 ```rb
 multi_range = MultiRange.new([1..10])
 multi_range -= 5..7
@@ -56,7 +56,7 @@ multi_range.ranges
 # => [1...5, 61..70, 86..100] 
 ```
 
-### Range union
+### Union ranges
 
 ```rb
 multi_range = MultiRange.new([1..5])
@@ -72,14 +72,14 @@ multi_range.ranges
 # => [1..6, 10..25, 30..30]
 ```
 
-### Flatten
+### Merge overlaps
 ```rb
 multi_range = MultiRange.new([1, 2, 4..6, 7, 8..12])
 multi_range.merge_overlaps.ranges
 # => [1..2, 4..12]
 ```
 
-### Overlaps?
+### Check if it overlaps with the other
 
 ```rb
 multi_range = MultiRange.new([1..5, 10..15, 20..25])
