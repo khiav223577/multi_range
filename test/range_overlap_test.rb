@@ -7,6 +7,7 @@ class RangeOverlapTest < Minitest::Test
     @degree_range = MultiRange.new([0...360])
     @empty_range = MultiRange.new([])
     @multi_range = MultiRange.new([0..100, 200..300, 500..600])
+    @float_range = MultiRange.new([1.2..1.5, 1.7..1.8, 3.5..7.2])
   end
 
   def test_empty_range

@@ -23,6 +23,7 @@ class MultiRange
 
   def initialize(ranges)
     @ranges = ranges.map{|s| s.is_a?(Numeric) ? s..s : s }.sort_by(&:begin).freeze
+    @is_float = @ranges.any?{|range| range.begin.is_a?(Float) || range.end.is_a?(Float) }
   end
 
   def merge_overlaps
@@ -35,11 +36,11 @@ class MultiRange
       next current_range = range if current_range == nil
       next if range.max <= current_range.max
 
-      if current_range.max + 1 < range.min
+      if can_combine?(current_range, range)
+        current_range = current_range.min..range.max
+      else
         new_ranges << current_range
         current_range = range
-      else
-        current_range = current_range.min..range.max
       end
     end
 
@@ -139,5 +140,13 @@ class MultiRange
   def max
     range = @ranges.last
     return range.max if range
+  end
+
+  private
+
+  # make sure that range1.begin <= range2.begin
+  def can_combine?(range1, range2)
+    return range1.max >= range2.min if @is_float
+    return range1.max + 1 >= range2.min
   end
 end
