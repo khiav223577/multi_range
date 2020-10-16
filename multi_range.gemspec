@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['khiav reoy']
   spec.email         = ['mrtmrt15xn@yahoo.com.tw']
 
-  spec.summary       = 'Provides cross-rails methods for you to upgrade rails, backport features, create easy-to-maintain gems, and so on.'
-  spec.description   = 'Provides cross-rails methods for you to upgrade rails, backport features, create easy-to-maintain gems, and so on.'
+  spec.summary       = 'Allow you to manipulate a group of ranges. Such as merging overlapping ranges, doing ranges union and difference.'
+  spec.description   = 'Allow you to manipulate a group of ranges. Such as merging overlapping ranges, doing ranges union and difference.'
   spec.homepage      = 'https://github.com/khiav223577/multi_range'
   spec.license       = 'MIT'
 
