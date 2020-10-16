@@ -42,6 +42,13 @@ class RangeDifferenceTest < Minitest::Test
       :before => [0...360],
       :after  => [21...360]
     )
+
+    assert_before_and_after(
+      proc{ @float_range.ranges },
+      proc{ @float_range -= -1.5..1.3 },
+      :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
+      :after  => [1.7..1.8, 3.5..7.2] # FIXME: missing 1.50000001...1.7
+    )
   end
 
   def test_when_left_cover_excluded_range
@@ -51,6 +58,13 @@ class RangeDifferenceTest < Minitest::Test
       :before => [0...360],
       :after  => [0...330]
     )
+
+    assert_before_and_after(
+      proc{ @float_range.ranges },
+      proc{ @float_range -= 3.6..8 },
+      :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
+      :after  => [1.2..1.5, 1.7..1.8, 3.5...3.6]
+    )
   end
 
   def test_when_not_cover_excluded_range
@@ -58,6 +72,13 @@ class RangeDifferenceTest < Minitest::Test
       proc{ @degree_range.ranges },
       proc{ @degree_range -= -30..400 },
       :before => [0...360],
+      :after  => []
+    )
+
+    assert_before_and_after(
+      proc{ @float_range.ranges },
+      proc{ @float_range -= -3.5..20.1 },
+      :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
       :after  => []
     )
   end
@@ -69,6 +90,13 @@ class RangeDifferenceTest < Minitest::Test
       :before => [0...360],
       :after  => [0...360]
     )
+
+    assert_before_and_after(
+      proc{ @float_range.ranges },
+      proc{ @float_range -= -3.5..-2.6 },
+      :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
+      :after  => [1.2..1.5, 1.7..1.8, 3.5..7.2]
+    )
   end
 
   def test_when_larger_and_not_overlap
@@ -77,6 +105,13 @@ class RangeDifferenceTest < Minitest::Test
       proc{ @degree_range -= 370..400 },
       :before => [0...360],
       :after  => [0...360]
+    )
+
+    assert_before_and_after(
+      proc{ @float_range.ranges },
+      proc{ @float_range -= 8.9..11.2 },
+      :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
+      :after  => [1.2..1.5, 1.7..1.8, 3.5..7.2]
     )
   end
 
