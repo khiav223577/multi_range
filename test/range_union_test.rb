@@ -31,7 +31,7 @@ class RangeUnionTest < Minitest::Test
       proc{ @float_range.ranges },
       proc{ @float_range |= 3.8..4.5 },
       :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
-      :after  => [1.2..1.5, 1.7..1.8, 3.5..7.2],
+      :after  => [1.2..1.5, 1.7..1.8, 3.5..7.2]
     )
   end
 
@@ -47,7 +47,7 @@ class RangeUnionTest < Minitest::Test
       proc{ @float_range.ranges },
       proc{ @float_range |= -2.7..1.2 },
       :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
-      :after  => [-2.7..1.5, 1.7..1.8, 3.5..7.2],
+      :after  => [-2.7..1.5, 1.7..1.8, 3.5..7.2]
     )
   end
 
@@ -63,7 +63,7 @@ class RangeUnionTest < Minitest::Test
       proc{ @float_range.ranges },
       proc{ @float_range |= 5.5..7.4 },
       :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
-      :after  => [1.2..1.5, 1.7..1.8, 3.5..7.4],
+      :after  => [1.2..1.5, 1.7..1.8, 3.5..7.4]
     )
   end
 
@@ -79,7 +79,7 @@ class RangeUnionTest < Minitest::Test
       proc{ @float_range.ranges },
       proc{ @float_range |= -1.5..19.2 },
       :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
-      :after  => [-1.5..19.2],
+      :after  => [-1.5..19.2]
     )
   end
 
@@ -95,7 +95,7 @@ class RangeUnionTest < Minitest::Test
       proc{ @float_range.ranges },
       proc{ @float_range |= -1.5..0.3 },
       :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
-      :after  => [-1.5..0.3, 1.2..1.5, 1.7..1.8, 3.5..7.2],
+      :after  => [-1.5..0.3, 1.2..1.5, 1.7..1.8, 3.5..7.2]
     )
   end
 
@@ -111,7 +111,7 @@ class RangeUnionTest < Minitest::Test
       proc{ @float_range.ranges },
       proc{ @float_range |= 7.3...8.3 },
       :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
-      :after  => [1.2..1.5, 1.7..1.8, 3.5..7.2, 7.3...8.3],
+      :after  => [1.2..1.5, 1.7..1.8, 3.5..7.2, 7.3...8.3]
     )
   end
 
@@ -136,7 +136,7 @@ class RangeUnionTest < Minitest::Test
       proc{ @float_range.ranges },
       proc{ @float_range |= 7.3...8.3 },
       :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
-      :after  => [1.2..1.5, 1.7..1.8, 3.5..7.2, 7.3...8.3],
+      :after  => [1.2..1.5, 1.7..1.8, 3.5..7.2, 7.3...8.3]
     )
   end
 
