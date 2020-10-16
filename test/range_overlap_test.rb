@@ -7,6 +7,7 @@ class RangeOverlapTest < Minitest::Test
     @degree_range = MultiRange.new([0...360])
     @empty_range = MultiRange.new([])
     @multi_range = MultiRange.new([0..100, 200..300, 500..600])
+    @float_range = MultiRange.new([1.2..1.5, 1.7..1.8, 3.5..7.2])
   end
 
   def test_empty_range
@@ -48,5 +49,13 @@ class RangeOverlapTest < Minitest::Test
 
   def test_other_multi_range_and_not_overlap
     assert_equal false, @multi_range.overlaps?(MultiRange.new([-10..-5, 105..199, 400, 700..900]))
+  end
+
+  def test_float
+    assert_equal false, @float_range.overlaps?(1.6..1.65)
+    assert_equal false, @float_range.overlaps?(1.6..1.69)
+    assert_equal false, @float_range.overlaps?(1.6...1.7)
+    assert_equal true, @float_range.overlaps?(1.6..1.7)
+    assert_equal true, @float_range.overlaps?(1.6..1.71)
   end
 end

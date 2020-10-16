@@ -77,6 +77,10 @@ multi_range.ranges
 multi_range = MultiRange.new([1, 2, 4..6, 7, 8..12])
 multi_range.merge_overlaps.ranges
 # => [1..2, 4..12]
+
+multi_range = MultiRange.new([1.2..1.5, 1.7..1.9, 1.8..2.2])
+multi_range.merge_overlaps.ranges
+# => [1.2..1.5, 1.7..2.2]
 ```
 
 ### Check if it overlaps with the other

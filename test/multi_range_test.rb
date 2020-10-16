@@ -16,6 +16,10 @@ class MultiRangeTest < Minitest::Test
     assert_equal [1..1, 4..6, 9..9], MultiRange.new([1, 4..6, 9]).ranges
   end
 
+  def test_float_to_range
+    assert_equal [1.2..1.6, 1.8..1.8], MultiRange.new([1.2..1.6, 1.8]).ranges
+  end
+
   def test_unsorted_ranges
     assert_equal @multi_range.ranges, MultiRange.new([4..5, 0..2]).ranges
     assert_equal [12..12, 20..20, 21..21, 24..26, 30..31], MultiRange.new([30..31, 12, 24..26, 21, 20]).ranges
@@ -29,6 +33,24 @@ class MultiRangeTest < Minitest::Test
 
     multi_range = MultiRange.new([1, 2, 3, 4..6, 7, 9, 11..13, 14..16, 17, 19..20])
     assert_equal [1..7, 9..9, 11..17, 19..20], multi_range.merge_overlaps.ranges
+  end
+
+  def test_merge_overlaps_with_float_range
+    multi_range = MultiRange.new([1.2..1.5, 1.7..1.9, 1.8..2.2])
+    assert_equal [1.2..1.5, 1.7..2.2], multi_range.merge_overlaps.ranges
+  end
+
+  def test_excluded_end_value_will_be_merged
+    multi_range = MultiRange.new([1...3, 3..4])
+    assert_equal [1..4], multi_range.merge_overlaps.ranges
+
+    multi_range = MultiRange.new([1.1...1.2, 1.2..1.4])
+    assert_equal [1.1..1.4], multi_range.merge_overlaps.ranges
+  end
+
+  def test_float_value_with_exclude_end
+    multi_range = MultiRange.new([1.1...1.3, 1.2...1.4])
+    assert_equal [1.1...1.4], multi_range.merge_overlaps.ranges
   end
 
   def test_size

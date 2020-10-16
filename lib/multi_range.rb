@@ -22,7 +22,8 @@ class MultiRange
   attr_reader :ranges
 
   def initialize(ranges)
-    @ranges = ranges.map{|s| s.is_a?(Integer) ? s..s : s }.sort_by(&:begin).freeze
+    @ranges = ranges.map{|s| s.is_a?(Numeric) ? s..s : s }.sort_by(&:begin).freeze
+    @is_float = @ranges.any?{|range| range.begin.is_a?(Float) || range.end.is_a?(Float) }
   end
 
   def merge_overlaps
@@ -33,13 +34,13 @@ class MultiRange
 
     @ranges.each do |range|
       next current_range = range if current_range == nil
-      next if range.max <= current_range.max
+      next if range.end <= current_range.end
 
-      if current_range.max + 1 < range.min
+      if can_combine?(current_range, range)
+        current_range = range.exclude_end? ? current_range.begin...range.end : current_range.begin..range.end
+      else
         new_ranges << current_range
         current_range = range
-      else
-        current_range = current_range.min..range.max
       end
     end
 
@@ -57,24 +58,26 @@ class MultiRange
     new_ranges = @ranges.dup
 
     return MultiRange.new(new_ranges) if new_ranges.empty?
-    return MultiRange.new(new_ranges) if other.min > @ranges.last.max # 大於最大值
-    return MultiRange.new(new_ranges) if other.max < @ranges.first.min # 小於最小值
+    return MultiRange.new(new_ranges) if other.begin > @ranges.last.end # 大於最大值
+    return MultiRange.new(new_ranges) if other.end < @ranges.first.begin # 小於最小值
 
     changed_size = 0
     @ranges.each_with_index do |range, idx|
-      next if other.min > range.max # 大於這個 range
-      break if other.max < range.min # 小於這個 range
+      next if other.begin > range.end # 大於這個 range
+      break if other.end < range.begin # 小於這個 range
 
-      sub_range1 = range.min...other.min
-      sub_range2 = (other.max + 1)..range.max
+      sub_range1 = range.begin...other.begin
+
+      sub_range2_begin = other.exclude_end? ? other.end : other.end + (other.end.is_a?(Float) ? Float::EPSILON : 1)
+      sub_range2 = range.exclude_end? ? sub_range2_begin...range.end : sub_range2_begin..range.end
 
       sub_ranges = []
-      sub_ranges << sub_range1 if sub_range1.any?
-      sub_ranges << sub_range2 if sub_range2.any?
+      sub_ranges << sub_range1 if sub_range1.begin <= sub_range1.end
+      sub_ranges << sub_range2 if sub_range2.begin <= sub_range2.end
 
       new_ranges[idx + changed_size, 1] = sub_ranges
       changed_size += sub_ranges.size - 1
-      break if other.max <= range.max # 沒有超過一個 range 的範圍
+      break if other.end <= range.end # 沒有超過一個 range 的範圍
     end
 
     return MultiRange.new(new_ranges)
@@ -87,7 +90,7 @@ class MultiRange
 
   def overlaps?(other)
     multi_range = merge_overlaps
-    return multi_range.size != (multi_range - other).size
+    return multi_range.ranges != (multi_range - other).ranges
   end
 
   def sample
@@ -139,5 +142,13 @@ class MultiRange
   def max
     range = @ranges.last
     return range.max if range
+  end
+
+  private
+
+  # make sure that range1.begin <= range2.begin
+  def can_combine?(range1, range2)
+    return range1.end >= range2.begin if @is_float
+    return range1.end + 1 >= range2.begin
   end
 end
