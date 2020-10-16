@@ -26,6 +26,13 @@ class RangeUnionTest < Minitest::Test
       :before => [0...360],
       :after  => [0...360]
     )
+
+    assert_before_and_after(
+      proc{ @float_range.ranges },
+      proc{ @float_range |= 3.8..4.5 },
+      :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
+      :after  => [1.2..1.5, 1.7..1.8, 3.5..7.2],
+    )
   end
 
   def test_when_right_cover_excluded_range
@@ -34,6 +41,13 @@ class RangeUnionTest < Minitest::Test
       proc{ @degree_range |= -10..20 },
       :before => [0...360],
       :after  => [-10...360]
+    )
+
+    assert_before_and_after(
+      proc{ @float_range.ranges },
+      proc{ @float_range |= -2.7..1.2 },
+      :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
+      :after  => [-2.7..1.5, 1.7..1.8, 3.5..7.2],
     )
   end
 
@@ -44,6 +58,13 @@ class RangeUnionTest < Minitest::Test
       :before => [0...360],
       :after  => [0..400]
     )
+
+    assert_before_and_after(
+      proc{ @float_range.ranges },
+      proc{ @float_range |= 5.5..7.4 },
+      :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
+      :after  => [1.2..1.5, 1.7..1.8, 3.5..7.4],
+    )
   end
 
   def test_when_not_cover_excluded_range
@@ -52,6 +73,13 @@ class RangeUnionTest < Minitest::Test
       proc{ @degree_range |= -30..400 },
       :before => [0...360],
       :after  => [-30..400]
+    )
+
+    assert_before_and_after(
+      proc{ @float_range.ranges },
+      proc{ @float_range |= -1.5..19.2 },
+      :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
+      :after  => [-1.5..19.2],
     )
   end
 
@@ -62,6 +90,13 @@ class RangeUnionTest < Minitest::Test
       :before => [0...360],
       :after  => [-30..-10, 0...360]
     )
+
+    assert_before_and_after(
+      proc{ @float_range.ranges },
+      proc{ @float_range |= -1.5..0.3 },
+      :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
+      :after  => [-1.5..0.3, 1.2..1.5, 1.7..1.8, 3.5..7.2],
+    )
   end
 
   def test_when_larger_and_not_overlap
@@ -70,6 +105,13 @@ class RangeUnionTest < Minitest::Test
       proc{ @degree_range |= 370..400 },
       :before => [0...360],
       :after  => [0...360, 370..400]
+    )
+
+    assert_before_and_after(
+      proc{ @float_range.ranges },
+      proc{ @float_range |= 7.3...8.3 },
+      :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
+      :after  => [1.2..1.5, 1.7..1.8, 3.5..7.2, 7.3...8.3],
     )
   end
 
@@ -88,6 +130,13 @@ class RangeUnionTest < Minitest::Test
       proc{ @multi_range |= MultiRange.new([50..60, 110..120, 180..550, 700]) },
       :before => [0..100, 200..300, 500..600],
       :after  => [0..100, 110..120, 180..600, 700..700]
+    )
+
+    assert_before_and_after(
+      proc{ @float_range.ranges },
+      proc{ @float_range |= 7.3...8.3 },
+      :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
+      :after  => [1.2..1.5, 1.7..1.8, 3.5..7.2, 7.3...8.3],
     )
   end
 
