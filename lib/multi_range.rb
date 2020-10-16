@@ -37,7 +37,7 @@ class MultiRange
       next if range.end <= current_range.end
 
       if can_combine?(current_range, range)
-        current_range = current_range.min..range.max
+        current_range = range.exclude_end? ? current_range.begin...range.end : current_range.begin..range.end
       else
         new_ranges << current_range
         current_range = range

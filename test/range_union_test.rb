@@ -33,7 +33,7 @@ class RangeUnionTest < Minitest::Test
       proc{ @degree_range.ranges },
       proc{ @degree_range |= -10..20 },
       :before => [0...360],
-      :after  => [-10..359]
+      :after  => [-10...360]
     )
   end
 

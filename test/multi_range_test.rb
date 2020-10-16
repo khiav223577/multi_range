@@ -48,6 +48,11 @@ class MultiRangeTest < Minitest::Test
     assert_equal [1.1..1.4], multi_range.merge_overlaps.ranges
   end
 
+  def test_float_value_with_exclude_end
+    multi_range = MultiRange.new([1.1...1.3, 1.2...1.4])
+    assert_equal [1.1...1.4], multi_range.merge_overlaps.ranges
+  end
+
   def test_size
     assert_equal 5, @multi_range.size
     assert_equal 0, @empty_range.size
