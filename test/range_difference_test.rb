@@ -31,7 +31,7 @@ class RangeDifferenceTest < Minitest::Test
       proc{ @float_range.ranges },
       proc{ @float_range -= 1.3..1.4 },
       :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
-      :after  => [1.2...1.3, 1.7..1.8, 3.5..7.2] # FIXME: missing 1.40000001..1.5
+      :after  => [1.2...1.3, 1.4000000000000001..1.5, 1.7..1.8, 3.5..7.2]
     )
   end
 
@@ -47,7 +47,7 @@ class RangeDifferenceTest < Minitest::Test
       proc{ @float_range.ranges },
       proc{ @float_range -= -1.5..1.3 },
       :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
-      :after  => [1.7..1.8, 3.5..7.2] # FIXME: missing 1.50000001...1.7
+      :after  => [1.3000000000000003..1.5, 1.7..1.8, 3.5..7.2]
     )
   end
 
