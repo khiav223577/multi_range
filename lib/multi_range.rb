@@ -22,7 +22,7 @@ class MultiRange
   attr_reader :ranges
 
   def initialize(ranges)
-    @ranges = ranges.map{|s| s.is_a?(Integer) ? s..s : s }.sort_by(&:begin).freeze
+    @ranges = ranges.map{|s| s.is_a?(Numeric) ? s..s : s }.sort_by(&:begin).freeze
   end
 
   def merge_overlaps

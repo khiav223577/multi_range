@@ -16,6 +16,10 @@ class MultiRangeTest < Minitest::Test
     assert_equal [1..1, 4..6, 9..9], MultiRange.new([1, 4..6, 9]).ranges
   end
 
+  def test_float_to_range
+    assert_equal [1.2..1.6, 1.8..1.8], MultiRange.new([1.2..1.6, 1.8]).ranges
+  end
+
   def test_unsorted_ranges
     assert_equal @multi_range.ranges, MultiRange.new([4..5, 0..2]).ranges
     assert_equal [12..12, 20..20, 21..21, 24..26, 30..31], MultiRange.new([30..31, 12, 24..26, 21, 20]).ranges
