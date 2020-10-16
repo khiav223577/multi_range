@@ -7,6 +7,7 @@ class RangeDifferenceTest < Minitest::Test
     @degree_range = MultiRange.new([0...360])
     @empty_range = MultiRange.new([])
     @multi_range = MultiRange.new([0..100, 200..300, 500..600])
+    @float_range = MultiRange.new([1.2..1.5, 1.7..1.8, 3.5..7.2])
   end
 
   def test_empty_range
@@ -96,6 +97,15 @@ class RangeDifferenceTest < Minitest::Test
       proc{ @multi_range -= MultiRange.new([-10..-5, 105..199, 400, 700..900]) },
       :before => [0..100, 200..300, 500..600],
       :after  => [0..100, 200..300, 500..600]
+    )
+  end
+
+  def test_float
+    assert_before_and_after(
+      proc{ @float_range.ranges },
+      proc{ @float_range -= MultiRange.new([1.45..1.55, 5...6]) },
+      :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
+      :after  => [1.2...1.45, 1.7..1.8, 3.5...5, 6..7.2]
     )
   end
 end

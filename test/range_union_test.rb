@@ -101,8 +101,11 @@ class RangeUnionTest < Minitest::Test
   end
 
   def test_float
-    assert_equal false, @float_range.overlaps?(1.6..1.65)
-    assert_equal false, @float_range.overlaps?(1.6..1.69)
-    assert_equal true, @float_range.overlaps?(1.6..1.71)
+    assert_before_and_after(
+      proc{ @float_range.ranges },
+      proc{ @float_range |= MultiRange.new([1.55..1.65, 2.3..3.5]) },
+      :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
+      :after  => [1.2..1.5, 1.55..1.65, 1.7..1.8, 2.3..7.2]
+    )
   end
 end

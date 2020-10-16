@@ -58,13 +58,13 @@ class MultiRange
     new_ranges = @ranges.dup
 
     return MultiRange.new(new_ranges) if new_ranges.empty?
-    return MultiRange.new(new_ranges) if other.min > @ranges.last.max # 大於最大值
-    return MultiRange.new(new_ranges) if other.max < @ranges.first.min # 小於最小值
+    return MultiRange.new(new_ranges) if other.begin > @ranges.last.end # 大於最大值
+    return MultiRange.new(new_ranges) if other.end < @ranges.first.begin # 小於最小值
 
     changed_size = 0
     @ranges.each_with_index do |range, idx|
-      next if other.min > range.max # 大於這個 range
-      break if other.max < range.min # 小於這個 range
+      next if other.begin > range.end # 大於這個 range
+      break if other.end < range.begin # 小於這個 range
 
       sub_range1 = range.min...other.min
       sub_range2 = (other.max + 1)..range.max
