@@ -90,7 +90,7 @@ class MultiRange
 
   def overlaps?(other)
     multi_range = merge_overlaps
-    return multi_range.size != (multi_range - other).size
+    return multi_range.ranges != (multi_range - other).ranges
   end
 
   def sample
