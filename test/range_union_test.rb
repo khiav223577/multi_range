@@ -108,4 +108,13 @@ class RangeUnionTest < Minitest::Test
       :after  => [1.2..1.5, 1.55..1.65, 1.7..1.8, 2.3..7.2]
     )
   end
+
+  def test_float_with_excluded_end_value_being_merged
+    assert_before_and_after(
+      proc{ @float_range.ranges },
+      proc{ @float_range |= MultiRange.new([2.2...3.5]) },
+      :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
+      :after  => [1.2..1.5, 1.7..1.8, 2.2..7.2]
+    )
+  end
 end

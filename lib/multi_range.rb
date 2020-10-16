@@ -34,7 +34,7 @@ class MultiRange
 
     @ranges.each do |range|
       next current_range = range if current_range == nil
-      next if range.max <= current_range.max
+      next if range.end <= current_range.end
 
       if can_combine?(current_range, range)
         current_range = current_range.min..range.max
@@ -146,7 +146,7 @@ class MultiRange
 
   # make sure that range1.begin <= range2.begin
   def can_combine?(range1, range2)
-    return range1.max >= range2.min if @is_float
-    return range1.max + 1 >= range2.min
+    return range1.end >= range2.begin if @is_float
+    return range1.end + 1 >= range2.begin
   end
 end

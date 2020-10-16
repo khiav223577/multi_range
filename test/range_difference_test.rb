@@ -107,5 +107,10 @@ class RangeDifferenceTest < Minitest::Test
       :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
       :after  => [1.2...1.45, 1.7..1.8, 3.5...5, 6..7.2]
     )
+
+    # We cannot exclude 1.4 from range begin.
+    # The expected output is 1.4...1.45 without 1.4 itself.
+    err = assert_raises(TypeError){ @float_range -= MultiRange.new([1.3..1.4]) }
+    assert_equal 'cannot exclude non Integer end value', err.message
   end
 end
