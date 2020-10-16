@@ -7,6 +7,7 @@ class RangeUnionTest < Minitest::Test
     @degree_range = MultiRange.new([0...360])
     @empty_range = MultiRange.new([])
     @multi_range = MultiRange.new([0..100, 200..300, 500..600])
+    @float_range = MultiRange.new([1.2..1.5, 1.7..1.8, 3.5..7.2])
   end
 
   def test_empty_range
@@ -97,5 +98,11 @@ class RangeUnionTest < Minitest::Test
       :before => [0..100, 200..300, 500..600],
       :after  => [-10..-5, 0..100, 105..300, 400..400, 500..600, 700..900]
     )
+  end
+
+  def test_float
+    assert_equal false, @float_range.overlaps?(1.6..1.65)
+    assert_equal false, @float_range.overlaps?(1.6..1.69)
+    assert_equal true, @float_range.overlaps?(1.6..1.71)
   end
 end

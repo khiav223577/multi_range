@@ -50,4 +50,10 @@ class RangeOverlapTest < Minitest::Test
   def test_other_multi_range_and_not_overlap
     assert_equal false, @multi_range.overlaps?(MultiRange.new([-10..-5, 105..199, 400, 700..900]))
   end
+
+  def test_float
+    assert_equal false, @float_range.overlaps?(1.6..1.65)
+    assert_equal false, @float_range.overlaps?(1.6..1.69)
+    assert_equal true, @float_range.overlaps?(1.6..1.71)
+  end
 end

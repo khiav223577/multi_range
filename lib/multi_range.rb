@@ -70,8 +70,8 @@ class MultiRange
       sub_range2 = (other.max + 1)..range.max
 
       sub_ranges = []
-      sub_ranges << sub_range1 if sub_range1.any?
-      sub_ranges << sub_range2 if sub_range2.any?
+      sub_ranges << sub_range1 if sub_range1.begin <= sub_range1.end
+      sub_ranges << sub_range2 if sub_range2.begin <= sub_range2.end
 
       new_ranges[idx + changed_size, 1] = sub_ranges
       changed_size += sub_ranges.size - 1
