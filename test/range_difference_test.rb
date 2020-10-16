@@ -24,7 +24,14 @@ class RangeDifferenceTest < Minitest::Test
       proc{ @degree_range.ranges },
       proc{ @degree_range -= 50..120 },
       :before => [0...360],
-      :after  => [0...50, 121..359]
+      :after  => [0...50, 121...360]
+    )
+
+    assert_before_and_after(
+      proc{ @float_range.ranges },
+      proc{ @float_range -= 1.3..1.4 },
+      :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
+      :after  => [1.2...1.3, 1.7..1.8, 3.5..7.2] # FIXME: missing 1.40000001..1.5
     )
   end
 
@@ -33,7 +40,7 @@ class RangeDifferenceTest < Minitest::Test
       proc{ @degree_range.ranges },
       proc{ @degree_range -= -10..20 },
       :before => [0...360],
-      :after  => [21..359]
+      :after  => [21...360]
     )
   end
 
@@ -89,6 +96,13 @@ class RangeDifferenceTest < Minitest::Test
       :before => [0..100, 200..300, 500..600],
       :after  => [0...50, 61..100, 551..600]
     )
+
+    assert_before_and_after(
+      proc{ @float_range.ranges },
+      proc{ @float_range -= MultiRange.new([1.45..1.55, 5...6]) },
+      :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
+      :after  => [1.2...1.45, 1.7..1.8, 3.5...5, 6..7.2]
+    )
   end
 
   def test_other_multi_range_and_not_overlap
@@ -98,19 +112,12 @@ class RangeDifferenceTest < Minitest::Test
       :before => [0..100, 200..300, 500..600],
       :after  => [0..100, 200..300, 500..600]
     )
-  end
 
-  def test_float
     assert_before_and_after(
       proc{ @float_range.ranges },
-      proc{ @float_range -= MultiRange.new([1.45..1.55, 5...6]) },
+      proc{ @float_range -= MultiRange.new([1.6...1.7, 2..3]) },
       :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
-      :after  => [1.2...1.45, 1.7..1.8, 3.5...5, 6..7.2]
+      :after  => [1.2..1.5, 1.7..1.8, 3.5..7.2]
     )
-
-    # We cannot exclude 1.4 from range begin.
-    # The expected output is 1.4...1.45 without 1.4 itself.
-    err = assert_raises(TypeError){ @float_range -= MultiRange.new([1.3..1.4]) }
-    assert_equal 'cannot exclude non Integer end value', err.message
   end
 end
