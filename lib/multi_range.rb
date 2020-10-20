@@ -148,7 +148,7 @@ class MultiRange
     return range.max if range
   end
 
-  def contain_overlops?
+  def contain_overlaps?
     merge_overlaps(merge_near_value: false).ranges != ranges
   end
 
