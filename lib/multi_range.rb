@@ -160,8 +160,8 @@ class MultiRange
       return range1.end >= range2.begin if @is_float
       return range1.end + 1 >= range2.begin
     else
-      return range1.end >= range2.begin if @is_float
       return false if range1.end == range2.begin and range1.exclude_end?
+      return range1.end >= range2.begin if @is_float
       return range1.end >= range2.begin
     end
   end
