@@ -156,7 +156,7 @@ class MultiRange
 
   # make sure that range1.begin <= range2.begin
   def can_combine?(range1, range2, merge_near_value)
-    return false if range1.end == range2.begin and range1.exclude_end? and !merge_near_value
+    return merge_near_value if range1.end == range2.begin and range1.exclude_end?
     return range1.end >= range2.begin if @is_float
     return range1.end + 1 >= range2.begin
   end
