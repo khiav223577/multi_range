@@ -68,7 +68,11 @@ class MultiRange
 
       sub_range1 = range.begin...other.begin
 
-      sub_range2_begin = other.exclude_end? ? other.end : other.end + (other.end.is_a?(Float) ? Float::EPSILON : 1)
+      sub_range2_begin = if other.exclude_end?
+                           other.end
+                         else
+                           other.end + (other.end.is_a?(Float) ? Float::EPSILON : 1)
+                         end
       sub_range2 = range.exclude_end? ? sub_range2_begin...range.end : sub_range2_begin..range.end
 
       sub_ranges = []
