@@ -41,5 +41,9 @@ class ContainOverlapTest < Minitest::Test
     assert_equal false, MultiRange.new([1.2..1.5, 1.7..1.8, 3.5..7.2, 1.6...1.7]).contain_overlops?
     assert_equal true, MultiRange.new([1.2..1.5, 1.7..1.8, 3.5..7.2, 1.6..1.7]).contain_overlops?
     assert_equal true, MultiRange.new([1.2..1.5, 1.7..1.8, 3.5..7.2, 1.6..1.71]).contain_overlops?
+
+    val = 1.7 - Float::EPSILON
+    assert_equal false, MultiRange.new([1.2..1.5, 1.7..1.8, 3.5..7.2, 1.6...val]).contain_overlops?
+    assert_equal false, MultiRange.new([1.2..1.5, 1.7..1.8, 3.5..7.2, 1.6..val]).contain_overlops?
   end
 end
