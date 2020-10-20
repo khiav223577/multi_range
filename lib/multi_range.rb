@@ -26,7 +26,7 @@ class MultiRange
     @is_float = @ranges.any?{|range| range.begin.is_a?(Float) || range.end.is_a?(Float) }
   end
 
-  def merge_overlaps
+  def merge_overlaps(merge_same_value = true)
     return MultiRange.new([]) if @ranges.size == 0
 
     new_ranges = []
@@ -36,7 +36,7 @@ class MultiRange
       next current_range = range if current_range == nil
       next if range.end <= current_range.end
 
-      if can_combine?(current_range, range)
+      if can_combine?(current_range, range, merge_same_value)
         current_range = range.exclude_end? ? current_range.begin...range.end : current_range.begin..range.end
       else
         new_ranges << current_range
@@ -148,10 +148,15 @@ class MultiRange
     return range.max if range
   end
 
+  def contain_overlaps?
+    merge_overlaps(false).ranges != ranges
+  end
+
   private
 
   # make sure that range1.begin <= range2.begin
-  def can_combine?(range1, range2)
+  def can_combine?(range1, range2, merge_same_value)
+    return merge_same_value if range1.end == range2.begin and range1.exclude_end?
     return range1.end >= range2.begin if @is_float
     return range1.end + 1 >= range2.begin
   end

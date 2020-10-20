@@ -57,5 +57,9 @@ class RangeOverlapTest < Minitest::Test
     assert_equal false, @float_range.overlaps?(1.6...1.7)
     assert_equal true, @float_range.overlaps?(1.6..1.7)
     assert_equal true, @float_range.overlaps?(1.6..1.71)
+
+    val = 1.7 - Float::EPSILON
+    assert_equal false, @float_range.overlaps?(1.6..val)
+    assert_equal false, @float_range.overlaps?(1.6...val)
   end
 end
