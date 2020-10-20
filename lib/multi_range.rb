@@ -148,6 +148,10 @@ class MultiRange
     return range.max if range
   end
 
+  def contain_overlops?
+    merge_overlaps.ranges != ranges
+  end
+
   private
 
   # make sure that range1.begin <= range2.begin
