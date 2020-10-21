@@ -49,36 +49,17 @@ class MultiRange
   end
 
   def -(other)
-    if other.is_a?(MultiRange)
-      new_multi_range = dup
-      other.ranges.each{|range| new_multi_range -= range }
-      return new_multi_range
-    end
+    return difference_with_other_multi_range(other) if other.is_a?(MultiRange)
 
     new_ranges = @ranges.dup
-
-    return MultiRange.new(new_ranges) if new_ranges.empty?
-    return MultiRange.new(new_ranges) if other.begin > @ranges.last.end # 大於最大值
-    return MultiRange.new(new_ranges) if other.end < @ranges.first.begin # 小於最小值
+    return MultiRange.new(new_ranges) if not overlaps_with_range?(other)
 
     changed_size = 0
     @ranges.each_with_index do |range, idx|
       next if other.begin > range.end # 大於這個 range
       break if other.end < range.begin # 小於這個 range
 
-      sub_range1 = range.begin...other.begin
-
-      sub_range2_begin = if other.exclude_end?
-                           other.end
-                         else
-                           other.end + (other.end.is_a?(Float) ? Float::EPSILON : 1)
-                         end
-      sub_range2 = range.exclude_end? ? sub_range2_begin...range.end : sub_range2_begin..range.end
-
-      sub_ranges = []
-      sub_ranges << sub_range1 if sub_range1.begin <= sub_range1.end
-      sub_ranges << sub_range2 if sub_range2.begin <= sub_range2.end
-
+      sub_ranges = possible_sub_ranges_of(range, other)
       new_ranges[idx + changed_size, 1] = sub_ranges
       changed_size += sub_ranges.size - 1
       break if other.end <= range.end # 沒有超過一個 range 的範圍
@@ -159,5 +140,35 @@ class MultiRange
     return merge_same_value if range1.end == range2.begin and range1.exclude_end?
     return range1.end >= range2.begin if @is_float
     return range1.end + 1 >= range2.begin
+  end
+
+  def difference_with_other_multi_range(other)
+    new_multi_range = dup
+    other.ranges.each{|range| new_multi_range -= range }
+    return new_multi_range
+  end
+
+  def possible_sub_ranges_of(range, other)
+    sub_range1 = range.begin...other.begin
+
+    sub_range2_begin = if other.exclude_end?
+                         other.end
+                       else
+                         other.end + (other.end.is_a?(Float) ? Float::EPSILON : 1)
+                       end
+
+    sub_range2 = range.exclude_end? ? sub_range2_begin...range.end : sub_range2_begin..range.end
+
+    sub_ranges = []
+    sub_ranges << sub_range1 if sub_range1.begin <= sub_range1.end
+    sub_ranges << sub_range2 if sub_range2.begin <= sub_range2.end
+    return sub_ranges
+  end
+
+  def overlaps_with_range?(range)
+    return false if @ranges.empty?
+    return false if range.begin > @ranges.last.end # larger than maxinum
+    return false if range.end < @ranges.first.begin # smaller than mininum
+    return true
   end
 end
