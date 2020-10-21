@@ -52,10 +52,7 @@ class MultiRange
     return difference_with_other_multi_range(other) if other.is_a?(MultiRange)
 
     new_ranges = @ranges.dup
-
-    return MultiRange.new(new_ranges) if new_ranges.empty?
-    return MultiRange.new(new_ranges) if other.begin > @ranges.last.end # 大於最大值
-    return MultiRange.new(new_ranges) if other.end < @ranges.first.begin # 小於最小值
+    return MultiRange.new(new_ranges) if not overlaps_with_range?(other)
 
     changed_size = 0
     @ranges.each_with_index do |range, idx|
@@ -166,5 +163,12 @@ class MultiRange
     sub_ranges << sub_range1 if sub_range1.begin <= sub_range1.end
     sub_ranges << sub_range2 if sub_range2.begin <= sub_range2.end
     return sub_ranges
+  end
+
+  def overlaps_with_range?(range)
+    return false if @ranges.empty?
+    return false if range.begin > @ranges.last.end # larger than maxinum
+    return false if range.end < @ranges.first.begin # smaller than mininum
+    return true
   end
 end
