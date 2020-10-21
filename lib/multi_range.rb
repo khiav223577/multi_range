@@ -62,19 +62,7 @@ class MultiRange
       next if other.begin > range.end # 大於這個 range
       break if other.end < range.begin # 小於這個 range
 
-      sub_range1 = range.begin...other.begin
-
-      sub_range2_begin = if other.exclude_end?
-                           other.end
-                         else
-                           other.end + (other.end.is_a?(Float) ? Float::EPSILON : 1)
-                         end
-      sub_range2 = range.exclude_end? ? sub_range2_begin...range.end : sub_range2_begin..range.end
-
-      sub_ranges = []
-      sub_ranges << sub_range1 if sub_range1.begin <= sub_range1.end
-      sub_ranges << sub_range2 if sub_range2.begin <= sub_range2.end
-
+      sub_ranges = possible_sub_ranges_of(range, other)
       new_ranges[idx + changed_size, 1] = sub_ranges
       changed_size += sub_ranges.size - 1
       break if other.end <= range.end # 沒有超過一個 range 的範圍
@@ -161,5 +149,22 @@ class MultiRange
     new_multi_range = dup
     other.ranges.each{|range| new_multi_range -= range }
     return new_multi_range
+  end
+
+  def possible_sub_ranges_of(range, other)
+    sub_range1 = range.begin...other.begin
+
+    sub_range2_begin = if other.exclude_end?
+                         other.end
+                       else
+                         other.end + (other.end.is_a?(Float) ? Float::EPSILON : 1)
+                       end
+
+    sub_range2 = range.exclude_end? ? sub_range2_begin...range.end : sub_range2_begin..range.end
+
+    sub_ranges = []
+    sub_ranges << sub_range1 if sub_range1.begin <= sub_range1.end
+    sub_ranges << sub_range2 if sub_range2.begin <= sub_range2.end
+    return sub_ranges
   end
 end
