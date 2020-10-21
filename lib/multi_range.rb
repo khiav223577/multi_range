@@ -49,11 +49,7 @@ class MultiRange
   end
 
   def -(other)
-    if other.is_a?(MultiRange)
-      new_multi_range = dup
-      other.ranges.each{|range| new_multi_range -= range }
-      return new_multi_range
-    end
+    return difference_with_other_multi_range(other) if other.is_a?(MultiRange)
 
     new_ranges = @ranges.dup
 
@@ -159,5 +155,11 @@ class MultiRange
     return merge_same_value if range1.end == range2.begin and range1.exclude_end?
     return range1.end >= range2.begin if @is_float
     return range1.end + 1 >= range2.begin
+  end
+
+  def difference_with_other_multi_range(other)
+    new_multi_range = dup
+    other.ranges.each{|range| new_multi_range -= range }
+    return new_multi_range
   end
 end
