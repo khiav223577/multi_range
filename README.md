@@ -103,6 +103,23 @@ multi_range.overlaps?(MultiRange.new([6..8, 18..22]))
 # => true
 ```
 
+
+### Check if it contains overlaps
+
+```rb
+MultiRange.new([0..3, 5..10, 20..50]).contain_overlaps?
+# => false
+
+MultiRange.new([0...5, 5..10, 20..50]).contain_overlaps?
+# => false
+
+MultiRange.new([0..5, 5..10, 20..50]).contain_overlaps?
+# => true
+
+MultiRange.new([0...7, 5..10, 20..50]).contain_overlaps?
+# => true
+```
+
 ### Range-like interface
 
 #### each
