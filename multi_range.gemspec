@@ -43,4 +43,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'backports', '~> 3.15.0'
 
   spec.add_dependency 'roulette-wheel-selection', '~> 1.1.1'
+  spec.add_dependency 'augmented_interval_tree', '~> 0.1.1'
 end

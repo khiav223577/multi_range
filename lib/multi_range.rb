@@ -2,6 +2,7 @@
 
 require 'multi_range/version'
 require 'roulette-wheel-selection'
+require 'interval_tree'
 
 if not Range.method_defined?(:size)
   warn "Please backports Range#size method to use multi_range gem.\n" \
@@ -22,8 +23,17 @@ class MultiRange
   attr_reader :ranges
 
   def initialize(ranges)
-    @ranges = ranges.map{|s| s.is_a?(Numeric) ? s..s : s }.sort_by(&:begin).freeze
-    @is_float = @ranges.any?{|range| range.begin.is_a?(Float) || range.end.is_a?(Float) }
+    if ranges.is_a? MultiRange
+      @ranges = ranges.ranges
+      @is_float = ranges.is_float?
+    else
+      @ranges = ranges.map{|s| s.is_a?(Numeric) ? s..s : s }.sort_by(&:begin).freeze
+      @is_float = @ranges.any?{|range| range.begin.is_a?(Float) || range.end.is_a?(Float) }
+    end
+  end
+
+  def is_float?
+    @is_float
   end
 
   def merge_overlaps(merge_same_value = true)
@@ -46,6 +56,26 @@ class MultiRange
 
     new_ranges << current_range
     return MultiRange.new(new_ranges)
+  end
+
+  def &(other)
+    other_ranges = MultiRange.new(other).merge_overlaps.ranges
+    tree = IntervalTree::Tree.new(other_ranges)
+    intersected_ranges = merge_overlaps.ranges.flat_map do |range|
+      matching_ranges_converted_to_exclusive = tree.search(range) || []
+
+      matching_ranges = matching_ranges_converted_to_exclusive.map do |matching_range_converted_to_exclusive|
+        other_ranges.find do |other_range|
+          # Having merged overlaps in each multirange, there's no need to check the endings, since there will only be one range with each beginning
+          other_range.begin == matching_range_converted_to_exclusive.begin
+        end
+      end
+
+      matching_ranges.map do |matching_range|
+        intersect_two_ranges(range, matching_range)
+      end
+    end
+    MultiRange.new(intersected_ranges)
   end
 
   def -(other)
@@ -170,5 +200,16 @@ class MultiRange
     return false if range.begin > @ranges.last.end # larger than maxinum
     return false if range.end < @ranges.first.begin # smaller than mininum
     return true
+  end
+
+  def intersect_two_ranges(range_a, range_b)
+    ranges = [range_a, range_b]
+    start = ranges.map(&:begin).max
+    finish = ranges.map(&:end).min
+    if ranges.sort_by { |range| [range.end, range.exclude_end? ? 1 : 0] }.first.exclude_end?
+      start...finish
+    else
+      start..finish
+    end
   end
 end

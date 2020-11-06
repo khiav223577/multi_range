@@ -38,3 +38,11 @@ def assert_frozen_error
 
   assert_raises(frozen_class){ yield }
 end
+
+def assert_performant
+  performance_budget_in_seconds = 0.1
+  a = Time.now
+  yield
+  b = Time.now
+  assert(b - a < performance_budget_in_seconds)
+end
