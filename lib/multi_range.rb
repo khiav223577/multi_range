@@ -79,6 +79,8 @@ class MultiRange
     MultiRange.new(intersected_ranges)
   end
 
+  alias intersection &
+
   def -(other)
     return difference_with_other_multi_range(other) if other.is_a?(MultiRange)
 
@@ -99,10 +101,14 @@ class MultiRange
     return MultiRange.new(new_ranges)
   end
 
+  alias difference -
+
   def |(other)
     other_ranges = other.is_a?(MultiRange) ? other.ranges : [other]
     return MultiRange.new(@ranges + other_ranges).merge_overlaps
   end
+
+  alias union |
 
   def overlaps?(other)
     multi_range = merge_overlaps
