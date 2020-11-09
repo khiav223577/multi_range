@@ -64,6 +64,7 @@ class MultiRange
     intersected_ranges = merge_overlaps.ranges.flat_map do |range|
       matching_ranges_converted_to_exclusive = tree.search(range) || []
 
+      # The interval tree converts interval endings to exclusive, so we need to restore the original
       matching_ranges = matching_ranges_converted_to_exclusive.map do |matching_range_converted_to_exclusive|
         other_ranges.find do |other_range|
           # Having merged overlaps in each multirange, there's no need to check the endings, since there will only be one range with each beginning
