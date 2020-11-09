@@ -9,11 +9,6 @@ rvm:
   - 2.7
 gemfile:
   - gemfiles/Gemfile
-matrix:
-  include:
-    - dist: trusty
-      rvm: 1.8.7
-      gemfile: gemfiles/ruby_1_8_7.gemfile
 before_install:
   - if `ruby -e 'exit(RUBY_VERSION.to_f < 2.7)'`; then
       gem i rubygems-update -v '< 3' && update_rubygems;
