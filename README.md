@@ -28,7 +28,7 @@ Or install it yourself as:
 
 ## Usage
 
-Allow you to manipulate a group of ranges. Such as merging overlapping ranges, doing ranges union and difference.
+Allow you to manipulate a group of ranges. Such as merging overlapping ranges, doing ranges union, intersection, and difference.
 
 ### Sample a number
 ```rb
@@ -73,6 +73,22 @@ multi_range = MultiRange.new([1..5, 10..15, 20..25])
 multi_range |= MultiRange.new([3..6, 14..22, 30])
 multi_range.ranges
 # => [1..6, 10..25, 30..30]
+```
+
+### Intersection ranges
+
+```rb
+multi_range = MultiRange.new([1..5])
+multi_range &= 3..8
+multi_range.ranges
+# => [3..5]
+```
+
+```rb
+multi_range = MultiRange.new([1..3, 5..10])
+multi_range &= MultiRange.new([2..6, 8..9])
+multi_range.ranges
+# => [2..3, 5..6, 8..9]
 ```
 
 ### Merge overlaps
