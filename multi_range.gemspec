@@ -34,6 +34,8 @@ Gem::Specification.new do |spec|
     'bug_tracker_uri'   => 'https://github.com/khiav223577/multi_range/issues',
   }
 
+  spec.required_ruby_version = '>= 2.0'
+
   spec.add_development_dependency 'bundler', '>= 1.17', '< 3.x'
   spec.add_development_dependency 'rake', '>= 10.5.0'
   spec.add_development_dependency 'minitest', '~> 5.0'
