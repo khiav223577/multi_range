@@ -7,7 +7,10 @@
 [![Test Coverage](https://codeclimate.com/github/khiav223577/multi_range/badges/coverage.svg)](https://codeclimate.com/github/khiav223577/multi_range/coverage)
 
 ## Supports
-- Ruby 1.8 ~ 2.7
+ 
+- Ruby 2.0 ~ 2.7
+
+For Ruby 1.8.x and 1.9.x, please use multi_range < 2.
 
 ## Installation
 
