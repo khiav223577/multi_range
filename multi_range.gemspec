@@ -39,7 +39,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'bundler', '>= 1.17', '< 3.x'
   spec.add_development_dependency 'rake', '>= 10.5.0'
   spec.add_development_dependency 'minitest', '~> 5.0'
+  spec.add_development_dependency 'minitest-color', '~> 0.0.2'
   spec.add_development_dependency 'backports', '~> 3.15.0'
 
   spec.add_dependency 'roulette-wheel-selection', '~> 1.1.1'
+  spec.add_dependency 'fast_interval_tree', '~> 0.2.0'
 end

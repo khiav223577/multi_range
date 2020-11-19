@@ -13,6 +13,7 @@ end
 require 'multi_range'
 
 require 'minitest/autorun'
+require 'minitest/color'
 
 def assert_before_and_after(test_proc, subject_proc, expected_value)
   before = test_proc.call
@@ -36,4 +37,12 @@ def assert_frozen_error
                  end
 
   assert_raises(frozen_class){ yield }
+end
+
+def assert_performant
+  performance_budget_in_seconds = 0.1
+  a = Time.now
+  yield
+  b = Time.now
+  assert(b - a < performance_budget_in_seconds)
 end
