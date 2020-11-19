@@ -1,5 +1,17 @@
 ## Change Log
 
+### [v2.0.0](https://github.com/khiav223577/multi_range/compare/v1.3.0...v2.0.0) 2020/11/19
+- [#19](https://github.com/khiav223577/multi_range/pull/19) Implement intersection (@chrisnankervis)
+- [#20](https://github.com/khiav223577/multi_range/pull/20) Drop support for Ruby 1.8 and 1.9 (@khiav223577)
+- [#17](https://github.com/khiav223577/multi_range/pull/17) Refactoring - increase MAINTAINABILITY (@khiav223577)
+
+### [v1.3.0](https://github.com/khiav223577/multi_range/compare/v1.2.0...v1.3.0) 2020/10/20
+- [#16](https://github.com/khiav223577/multi_range/pull/16) Implement contain_overlaps? method (@khiav223577)
+
+### [v1.2.0](https://github.com/khiav223577/multi_range/compare/v1.1.0...v1.2.0) 2020/10/16
+- [#15](https://github.com/khiav223577/multi_range/pull/15) Add test cases to test union float ranges (@khiav223577)
+- [#14](https://github.com/khiav223577/multi_range/pull/14) Support float ranges (@khiav223577)
+
 ### [v1.1.0](https://github.com/khiav223577/multi_range/compare/v1.0.0...v1.1.0) 2020/10/15
 - [#13](https://github.com/khiav223577/multi_range/pull/13) Rename flatten => merge_overlaps (@khiav223577)
 
