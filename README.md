@@ -28,7 +28,7 @@ Or install it yourself as:
 
 ## Usage
 
-Allow you to manipulate a group of ranges. Such as merging overlapping ranges, doing ranges union, intersection, and difference.
+Allow you to manipulate a group of ranges. Such as merging overlapping ranges, doing ranges union, intersection, difference, and so on.
 
 ### Sample a number
 ```rb
