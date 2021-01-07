@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start 'test_frameworks'
 
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'backports/2.1.0/enumerable/to_h' if not Enumerable.method_defined?(:to_h)
