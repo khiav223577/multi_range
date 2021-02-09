@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in rails_or.gemspec
 
 group :test do
-  gem 'simplecov'
+  gem 'simplecov', '< 0.18'
 end
 
 gemspec :path => '../'
