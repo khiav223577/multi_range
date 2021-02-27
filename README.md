@@ -1,7 +1,7 @@
 # MultiRange
 
 [![Gem Version](https://img.shields.io/gem/v/multi_range.svg?style=flat)](http://rubygems.org/gems/multi_range)
-[![Build Status](https://travis-ci.com/khiav223577/multi_range/workflows/Ruby/badge.svg)](https://github.com/khiav223577/multi_range/actions)
+[![Build Status](https://github.com/khiav223577/multi_range/workflows/Ruby/badge.svg)](https://github.com/khiav223577/multi_range/actions)
 [![RubyGems](http://img.shields.io/gem/dt/multi_range.svg?style=flat)](http://rubygems.org/gems/multi_range)
 [![Code Climate](https://codeclimate.com/github/khiav223577/multi_range/badges/gpa.svg)](https://codeclimate.com/github/khiav223577/multi_range)
 [![Test Coverage](https://codeclimate.com/github/khiav223577/multi_range/badges/coverage.svg)](https://codeclimate.com/github/khiav223577/multi_range/coverage)
