@@ -67,7 +67,8 @@ class MultiRange
       # The interval tree converts interval endings to exclusive, so we need to restore the original
       matching_ranges = matching_ranges_converted_to_exclusive.map do |matching_range_converted_to_exclusive|
         other_ranges.find do |other_range|
-          # Having merged overlaps in each multirange, there's no need to check the endings, since there will only be one range with each beginning
+          # Having merged overlaps in each multi_range, there's no need to check the endings,
+          # since there will only be one range with each beginning
           other_range.begin == matching_range_converted_to_exclusive.begin
         end
       end
@@ -89,13 +90,26 @@ class MultiRange
 
     changed_size = 0
     @ranges.each_with_index do |range, idx|
-      next if other.begin > range.end # 大於這個 range
-      break if other.end < range.begin # 小於這個 range
+      # when this range is smaller than and not overlaps with `other`
+      #      range           other
+      #   |---------|    |---------|
+      next if other.begin > range.end
+
+      # when this range is larger than and not overlaps with `other`
+      #      other           range
+      #   |---------|    |---------|
+      break if other.end < range.begin
 
       sub_ranges = possible_sub_ranges_of(range, other)
       new_ranges[idx + changed_size, 1] = sub_ranges
       changed_size += sub_ranges.size - 1
-      break if other.end <= range.end # 沒有超過一個 range 的範圍
+
+      # when the maximum value of this range is larger than that of `other`
+      #     range
+      # -------------|
+      #   other
+      # ---------|
+      break if other.end <= range.end
     end
 
     return MultiRange.new(new_ranges)
@@ -204,8 +218,8 @@ class MultiRange
 
   def overlaps_with_range?(range)
     return false if @ranges.empty?
-    return false if range.begin > @ranges.last.end # larger than maxinum
-    return false if range.end < @ranges.first.begin # smaller than mininum
+    return false if range.begin > @ranges.last.end # larger than maximum
+    return false if range.end < @ranges.first.begin # smaller than minimum
     return true
   end
 
