@@ -91,12 +91,12 @@ class MultiRange
     changed_size = 0
     @ranges.each_with_index do |range, idx|
       # when this range is smaller than and not overlaps with `other`
-      #      range           other
+      #      range          other
       #   |---------|    |---------|
       next if other.begin > range.end
 
       # when this range is larger than and not overlaps with `other`
-      #      other           range
+      #      other          range
       #   |---------|    |---------|
       break if other.end < range.begin
 
