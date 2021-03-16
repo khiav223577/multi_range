@@ -124,6 +124,22 @@ class RangeDifferenceTest < Minitest::Test
     )
   end
 
+  def test_multi_range_covered_exactly
+    assert_before_and_after(
+      proc{ @multi_range.ranges },
+      proc{ @multi_range -= 200..300 },
+      :before => [0..100, 200..300, 500..600],
+      :after  => [0..100, 500..600]
+    )
+
+    assert_before_and_after(
+      proc{ @float_range.ranges },
+      proc{ @float_range -= 1.7..1.8 },
+      :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
+      :after  => [1.2..1.5, 3.5..7.2]
+    )
+  end
+
   def test_other_multi_range
     assert_before_and_after(
       proc{ @multi_range.ranges },
@@ -153,6 +169,22 @@ class RangeDifferenceTest < Minitest::Test
       proc{ @float_range -= MultiRange.new([1.6...1.7, 2..3]) },
       :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
       :after  => [1.2..1.5, 1.7..1.8, 3.5..7.2]
+    )
+  end
+
+  def test_other_multi_range_covered_exactly
+    assert_before_and_after(
+      proc{ @multi_range.ranges },
+      proc{ @multi_range -= MultiRange.new([200..300, 500..600]) },
+      :before => [0..100, 200..300, 500..600],
+      :after  => [0..100]
+    )
+
+    assert_before_and_after(
+      proc{ @float_range.ranges },
+      proc{ @float_range -= MultiRange.new([3.5..7.2, 1.7..1.8]) },
+      :before => [1.2..1.5, 1.7..1.8, 3.5..7.2],
+      :after  => [1.2..1.5]
     )
   end
 end
