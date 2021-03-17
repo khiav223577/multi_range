@@ -1,5 +1,11 @@
 ## Change Log
 
+### [v2.1.0](https://github.com/khiav223577/multi_range/compare/v2.0.0...v2.1.0) 2021/03/17
+- [#24](https://github.com/khiav223577/multi_range/pull/24) Avoid empty sub ranges (@GerritSe)
+- [#25](https://github.com/khiav223577/multi_range/pull/25) Do not publish code coverage for PRs from forks (@khiav223577)
+- [#22](https://github.com/khiav223577/multi_range/pull/22) Migrating from Travis CI to GitHub Actions (@khiav223577)
+- [#21](https://github.com/khiav223577/multi_range/pull/21) Fix: test files should not be included in coverage (@khiav223577)
+
 ### [v2.0.0](https://github.com/khiav223577/multi_range/compare/v1.3.0...v2.0.0) 2020/11/19
 - [#19](https://github.com/khiav223577/multi_range/pull/19) Implement intersection (@chrisnankervis)
 - [#20](https://github.com/khiav223577/multi_range/pull/20) Drop support for Ruby 1.8 and 1.9 (@khiav223577)
@@ -33,6 +39,6 @@
 - [#4](https://github.com/khiav223577/multi_range/pull/4) Add each, map, index_with methods (@khiav223577)
 - [#3](https://github.com/khiav223577/multi_range/pull/3) Support passing integer as range (@khiav223577)
 
-### [v0.0.1](https://github.com/khiav223577/multi_range/compare/v0.0.1...v0.0.1) 2020/03/01
+### v0.0.1 2020/03/01
 - [#2](https://github.com/khiav223577/multi_range/pull/2) Support Ruby 1.8.7 (@khiav223577)
 - [#1](https://github.com/khiav223577/multi_range/pull/1) Implement MultiRange (@khiav223577)
