@@ -211,8 +211,8 @@ class MultiRange
     sub_range2 = range.exclude_end? ? sub_range2_begin...range.end : sub_range2_begin..range.end
 
     sub_ranges = []
-    sub_ranges << sub_range1 if sub_range1.begin <= sub_range1.end
-    sub_ranges << sub_range2 if sub_range2.begin <= sub_range2.end
+    sub_ranges << sub_range1 if sub_range1.begin < sub_range1.end
+    sub_ranges << sub_range2 if sub_range2.begin < sub_range2.end
     return sub_ranges
   end
 
