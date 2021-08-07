@@ -1,5 +1,8 @@
 ## Change Log
 
+### [v2.1.1](https://github.com/khiav223577/multi_range/compare/v2.1.0...v2.1.1) 2021/08/07
+- [#26](https://github.com/khiav223577/multi_range/pull/26) Fix: unexpected float value when sample an one-element range (@khiav223577)
+
 ### [v2.1.0](https://github.com/khiav223577/multi_range/compare/v2.0.0...v2.1.0) 2021/03/17
 - [#24](https://github.com/khiav223577/multi_range/pull/24) Avoid empty sub ranges (@GerritSe)
 - [#25](https://github.com/khiav223577/multi_range/pull/25) Do not publish code coverage for PRs from forks (@khiav223577)
