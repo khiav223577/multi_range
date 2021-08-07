@@ -22,7 +22,7 @@ class MultiRange
   attr_reader :ranges
 
   def initialize(ranges)
-    @ranges = ranges.map{|s| s.is_a?(Numeric) ? s..s : s }.sort_by(&:begin).freeze
+    @ranges = ranges.map{|s| s.is_a?(Numeric) ? s..s : s }.sort_by{|s| s.begin }.freeze
     @is_float = @ranges.any?{|range| range.begin.is_a?(Float) || range.end.is_a?(Float) }
   end
 
