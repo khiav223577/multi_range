@@ -13,7 +13,6 @@ end
 require 'multi_range'
 
 require 'minitest/autorun'
-require 'minitest/color'
 
 def assert_before_and_after(test_proc, subject_proc, expected_value)
   before = test_proc.call
