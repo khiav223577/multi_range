@@ -8,7 +8,7 @@ class SampleTest < Minitest::Test
   end
 
   def test_empty_range
-    assert_equal nil, MultiRange.new([]).sample
+    assert_nil MultiRange.new([]).sample
   end
 
   def test_one_element_range
