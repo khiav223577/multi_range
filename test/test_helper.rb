@@ -30,9 +30,9 @@ end
 
 def assert_frozen_error
   frozen_class = case
-                 when RUBY_VERSION < '2'   ; TypeError
-                 when RUBY_VERSION < '2.5' ; RuntimeError
-                 else                      ; FrozenError
+                 when Gem::Version.new(RUBY_VERSION) < Gem::Version.new('2')   ; TypeError
+                 when Gem::Version.new(RUBY_VERSION) < Gem::Version.new('2.5') ; RuntimeError
+                 else                                                          ; FrozenError
                  end
 
   assert_raises(frozen_class){ yield }
