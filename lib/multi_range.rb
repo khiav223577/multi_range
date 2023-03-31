@@ -22,18 +22,14 @@ class MultiRange
 
   attr_reader :ranges
 
-  def initialize(ranges)
+  def initialize(ranges, sort_ranges: true)
     if ranges.is_a? MultiRange
       @ranges = ranges.ranges
-      @is_float = ranges.is_float?
     else
-      @ranges = ranges.map{|s| s.is_a?(Numeric) ? s..s : s }.sort_by(&:begin).freeze
-      @is_float = @ranges.any?{|range| range.begin.is_a?(Float) || range.end.is_a?(Float) }
+      @ranges = ranges.map{ |s| s.is_a?(Numeric) ? s..s : s }
+      @ranges = @ranges.sort_by(&:begin) if sort_ranges
+      @ranges = @ranges.freeze
     end
-  end
-
-  def is_float?
-    @is_float
   end
 
   def merge_overlaps(merge_same_value = true)
@@ -189,8 +185,7 @@ class MultiRange
   # make sure that range1.begin <= range2.begin
   def can_combine?(range1, range2, merge_same_value)
     return merge_same_value if range1.end == range2.begin and range1.exclude_end?
-    return range1.end >= range2.begin if @is_float
-    return range1.end + 1 >= range2.begin
+    range_combine_end(range1, false) >= range2.begin
   end
 
   def difference_with_other_multi_range(other)
@@ -202,11 +197,7 @@ class MultiRange
   def possible_sub_ranges_of(range, other)
     sub_range1 = range.begin...other.begin
 
-    sub_range2_begin = if other.exclude_end?
-                         other.end
-                       else
-                         other.end + (other.end.is_a?(Float) ? Float::EPSILON : 1)
-                       end
+    sub_range2_begin = range_combine_end(other)
 
     sub_range2 = range.exclude_end? ? sub_range2_begin...range.end : sub_range2_begin..range.end
 
@@ -214,6 +205,24 @@ class MultiRange
     sub_ranges << sub_range1 if sub_range1.begin < sub_range1.end
     sub_ranges << sub_range2 if sub_range2.begin < sub_range2.end
     return sub_ranges
+  end
+
+  def range_combine_end(range, increase_float = true)
+    range_end = range.end
+    return range_end if range.exclude_end?
+
+    case range_end
+    when Float
+      increase_float ? range_end.next_float : range_end
+    when Time # ActiveSupport::TimeWithZone
+      nanoseconds = range_end.nsec % 1000
+
+      round_to = nanoseconds <= 499 ? 499 : 1499
+      rounding_nanoseconds = (round_to - nanoseconds)
+      range_end + Rational(rounding_nanoseconds, 10**9)
+    else
+      range_end + 1
+    end
   end
 
   def overlaps_with_range?(range)

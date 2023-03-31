@@ -25,6 +25,11 @@ class MultiRangeTest < Minitest::Test
     assert_equal [12..12, 20..20, 21..21, 24..26, 30..31], MultiRange.new([30..31, 12, 24..26, 21, 20]).ranges
   end
 
+  def test_skip_sorting_ranges
+    assert_equal [4..5, 0..2], MultiRange.new([4..5, 0..2], sort_ranges: false).ranges
+    assert_equal [30..31, 12..12, 24..26, 21..21, 20..20], MultiRange.new([30..31, 12, 24..26, 21, 20], sort_ranges: false).ranges
+  end
+
   def test_merge_overlaps
     assert_equal [], @empty_range.merge_overlaps.ranges
 
