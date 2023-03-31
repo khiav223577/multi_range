@@ -78,52 +78,52 @@ class MultiRange
 
   alias intersection &
 
-  def -(other)
-    return difference_with_other_multi_range(other) if other.is_a?(MultiRange)
+        def -(other)
+          return difference_with_other_multi_range(other) if other.is_a?(MultiRange)
 
-    new_ranges = @ranges.dup
-    return MultiRange.new(new_ranges) if not overlaps_with_range?(other)
+          new_ranges = @ranges.dup
+          return MultiRange.new(new_ranges) if not overlaps_with_range?(other)
 
-    changed_size = 0
-    @ranges.each_with_index do |range, idx|
-      # when this range is smaller than and not overlaps with `other`
-      #      range          other
-      #   |---------|    |---------|
-      next if other.begin > range.end
+          changed_size = 0
+          @ranges.each_with_index do |range, idx|
+            # when this range is smaller than and not overlaps with `other`
+            #      range          other
+            #   |---------|    |---------|
+            next if other.begin > range.end
 
-      # when this range is larger than and not overlaps with `other`
-      #      other          range
-      #   |---------|    |---------|
-      break if other.end < range.begin
+            # when this range is larger than and not overlaps with `other`
+            #      other          range
+            #   |---------|    |---------|
+            break if other.end < range.begin
 
-      sub_ranges = possible_sub_ranges_of(range, other)
-      new_ranges[idx + changed_size, 1] = sub_ranges
-      changed_size += sub_ranges.size - 1
+            sub_ranges = possible_sub_ranges_of(range, other)
+            new_ranges[idx + changed_size, 1] = sub_ranges
+            changed_size += sub_ranges.size - 1
 
-      # when the maximum value of this range is larger than that of `other`
-      #     range
-      # -------------|
-      #   other
-      # ---------|
-      break if other.end <= range.end
-    end
+            # when the maximum value of this range is larger than that of `other`
+            #     range
+            # -------------|
+            #   other
+            # ---------|
+            break if other.end <= range.end
+          end
 
-    return MultiRange.new(new_ranges)
-  end
+          return MultiRange.new(new_ranges)
+        end
 
   alias difference -
 
-  def |(other)
-    other_ranges = other.is_a?(MultiRange) ? other.ranges : [other]
-    return MultiRange.new(@ranges + other_ranges).merge_overlaps
-  end
+        def |(other)
+          other_ranges = other.is_a?(MultiRange) ? other.ranges : [other]
+          return MultiRange.new(@ranges + other_ranges).merge_overlaps
+        end
 
   alias union |
 
-  def overlaps?(other)
-    multi_range = merge_overlaps
-    return multi_range.ranges != (multi_range - other).ranges
-  end
+        def overlaps?(other)
+          multi_range = merge_overlaps
+          return multi_range.ranges != (multi_range - other).ranges
+        end
 
   def sample
     range = RouletteWheelSelection.sample(@ranges.map{|s| [s, s.size] }.to_h)
@@ -207,8 +207,6 @@ class MultiRange
     return sub_ranges
   end
 
-  LESS_THAN_MICROSECOND = Rational(1, 10**6 + 1)
-  DATETIME_LESS_THAN_MICROSECOND = LESS_THAN_MICROSECOND * Rational(1, 86400)
   def range_combine_end(range, increase_float = true)
     range_end = range.end
     return range_end if range.exclude_end?
@@ -217,13 +215,13 @@ class MultiRange
     when Float
       increase_float ? range_end.next_float : range_end
     when Time # ActiveSupport::TimeWithZone
-      range_end + LESS_THAN_MICROSECOND
+      nanoseconds = range_end.nsec % 1000
+
+      round_to = nanoseconds <= 499 ? 499 : 1499
+      rounding_nanoseconds = (round_to - nanoseconds)
+      range_end + Rational(rounding_nanoseconds, 10**9)
     else
-      if defined?(DateTime) && range_end.is_a?(DateTime)
-        range_end + DATETIME_LESS_THAN_MICROSECOND
-      else # Date, Integer
-        range_end + 1
-      end
+      range_end + 1
     end
   end
 
