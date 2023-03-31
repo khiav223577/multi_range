@@ -46,4 +46,146 @@ class ContainOverlapTest < Minitest::Test
     assert_equal false, MultiRange.new([1.2..1.5, 1.7..1.8, 3.5..7.2, 1.6...val]).contain_overlaps?
     assert_equal false, MultiRange.new([1.2..1.5, 1.7..1.8, 3.5..7.2, 1.6..val]).contain_overlaps?
   end
+
+  def test_date
+    assert_equal false, MultiRange.new([Date.new(2001,2,3)..Date.new(2001,3,10), Date.new(2002,2,3)..Date.new(2002,3,10)]).contain_overlaps?
+    assert_equal true, MultiRange.new([Date.new(2001,2,3)..Date.new(2002,3,10), Date.new(2002,3,3)..Date.new(2002,3,10)]).contain_overlaps?
+    assert_equal true, MultiRange.new([Date.new(2001,2,3)..Date.new(2002,3,10), Date.new(2002,3,4)..Date.new(2002,3,10)]).contain_overlaps?
+  end
+
+  def test_time_overlaps_at_less_than_microsecond
+    assert_equal false, MultiRange.new(
+                   [
+                     Time.at(0)..Time.at(1),
+                     Time.at(3)..Time.at(4)
+                   ]
+                 ).contain_overlaps?
+
+    assert_equal false, MultiRange.new(
+                   [
+                     Time.at(0)..Time.at(1),
+                     Time.at(2)..Time.at(4)
+                   ]
+                 ).contain_overlaps?
+
+    assert_equal true, MultiRange.new(
+                   [
+                     Time.at(0)..Time.at(1),
+                     Time.at(1)..Time.at(4)
+                   ]
+                 ).contain_overlaps?
+
+    assert_equal true, MultiRange.new(
+                   [
+                     Time.at(0)..Time.at(1),
+                     Time.at(1,999,:nsec)..Time.at(4)
+                   ]
+                 ).contain_overlaps?
+
+    assert_equal false, MultiRange.new(
+                   [
+                     Time.at(0)..Time.at(1),
+                     Time.at(1,1,:microsecond)..Time.at(4)
+                   ]
+                 ).contain_overlaps?
+
+    assert_equal false, MultiRange.new(
+                   [
+                     Time.at(0)..Time.at(1),
+                     Time.at(1,1,:millisecond)..Time.at(4)
+                   ]
+                 ).contain_overlaps?
+  end
+
+  def test_date_time_overlaps_at_less_than_microsecond
+    assert_equal false, MultiRange.new(
+                   [
+                     Time.at(0).to_datetime..Time.at(1).to_datetime,
+                     Time.at(3).to_datetime..Time.at(4).to_datetime
+                   ]
+                 ).contain_overlaps?
+
+    assert_equal false, MultiRange.new(
+                   [
+                     Time.at(0).to_datetime..Time.at(1).to_datetime,
+                     Time.at(2).to_datetime..Time.at(4).to_datetime
+                   ]
+                 ).contain_overlaps?
+
+    assert_equal true, MultiRange.new(
+                   [
+                     Time.at(0).to_datetime..Time.at(1).to_datetime,
+                     Time.at(1).to_datetime..Time.at(4).to_datetime
+                   ]
+                 ).contain_overlaps?
+
+    assert_equal true, MultiRange.new(
+                   [
+                     Time.at(0).to_datetime..Time.at(1).to_datetime,
+                     Time.at(1,999,:nsec).to_datetime..Time.at(4).to_datetime
+                   ]
+                 ).contain_overlaps?
+
+    assert_equal false, MultiRange.new(
+                   [
+                     Time.at(0).to_datetime..Time.at(1).to_datetime,
+                     Time.at(1,1,:microsecond).to_datetime..Time.at(4).to_datetime
+                   ]
+                 ).contain_overlaps?
+
+    assert_equal false, MultiRange.new(
+                   [
+                     Time.at(0).to_datetime..Time.at(1).to_datetime,
+                     Time.at(1,1,:millisecond).to_datetime..Time.at(4).to_datetime
+                   ]
+                 ).contain_overlaps?
+  end
+
+  def test_active_support_time_with_timezone_overlaps_less_than_microsecond
+    require 'active_support/time_with_zone'
+    require 'active_support/time'
+    Time.zone = 'Eastern Time (US & Canada)'
+
+    assert_equal false, MultiRange.new(
+                   [
+                     Time.zone.at(0)..Time.zone.at(1),
+                     Time.zone.at(3)..Time.zone.at(4)
+                   ]
+                 ).contain_overlaps?
+
+    assert_equal false, MultiRange.new(
+                   [
+                     Time.zone.at(0)..Time.zone.at(1),
+                     Time.zone.at(2)..Time.zone.at(4)
+                   ]
+                 ).contain_overlaps?
+
+    assert_equal true, MultiRange.new(
+                   [
+                     Time.zone.at(0)..Time.zone.at(1),
+                     Time.zone.at(1)..Time.zone.at(4)
+                   ]
+                 ).contain_overlaps?
+
+    assert_equal true, MultiRange.new(
+                   [
+                     Time.zone.at(0)..Time.zone.at(1),
+                     Time.zone.at(1,999,:nsec)..Time.zone.at(4)
+                   ]
+                 ).contain_overlaps?
+
+    assert_equal false, MultiRange.new(
+                   [
+                     Time.zone.at(0)..Time.zone.at(1),
+                     Time.zone.at(1,1,:microsecond)..Time.zone.at(4)
+                   ]
+                 ).contain_overlaps?
+
+    assert_equal false, MultiRange.new(
+                   [
+                     Time.zone.at(0)..Time.zone.at(1),
+                     Time.zone.at(1,1,:millisecond)..Time.zone.at(4)
+                   ]
+                 ).contain_overlaps?
+  end
 end
