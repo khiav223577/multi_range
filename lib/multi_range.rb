@@ -22,11 +22,13 @@ class MultiRange
 
   attr_reader :ranges
 
-  def initialize(ranges)
+  def initialize(ranges, sort_ranges: true)
     if ranges.is_a? MultiRange
       @ranges = ranges.ranges
     else
-      @ranges = ranges.map{ |s| s.is_a?(Numeric) ? s..s : s }.sort_by(&:begin).freeze
+      @ranges = ranges.map{ |s| s.is_a?(Numeric) ? s..s : s }
+      @ranges = @ranges.sort_by(&:begin) if sort_ranges
+      @ranges = @ranges.freeze
     end
   end
 
