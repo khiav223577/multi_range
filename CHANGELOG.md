@@ -1,5 +1,10 @@
 ## Change Log
 
+### [v2.2.0](https://github.com/khiav223577/multi_range/compare/v1.3.2...v2.2.0) 2023/10/21
+- [#34](https://github.com/khiav223577/multi_range/pull/34) Fix: wrong empty range check which causes some differences to be dropped  (@khiav223577)
+- [#33](https://github.com/khiav223577/multi_range/pull/33) Fix: result should not be empty when intersection with inclusive range with one element (@khiav223577)
+- [#32](https://github.com/khiav223577/multi_range/pull/32) Drop the support of ruby 2.2 (@khiav223577)
+
 ### [v2.1.1](https://github.com/khiav223577/multi_range/compare/v2.1.0...v2.1.1) 2021/08/07
 - [#26](https://github.com/khiav223577/multi_range/pull/26) Fix: unexpected float value when sample an one-element range (@khiav223577)
 
