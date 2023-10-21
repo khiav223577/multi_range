@@ -207,7 +207,7 @@ class MultiRange
     sub_range2_begin = if other.exclude_end?
                          other.end
                        else
-                         other.end + (other.end.is_a?(Float) ? Float::EPSILON : 1)
+                         other.end.is_a?(Float) ? other.end.next_float : other.end + 1
                        end
 
     sub_range2 = range.exclude_end? ? sub_range2_begin...range.end : sub_range2_begin..range.end
