@@ -62,7 +62,9 @@ class MultiRange
     other_ranges = MultiRange.new(other).merge_overlaps.ranges
     tree = IntervalTree::Tree.new(other_ranges)
     intersected_ranges = merge_overlaps.ranges.flat_map do |range|
-      matching_ranges_converted_to_exclusive = tree.search(range) || []
+      # A workaround for the issue: https://github.com/greensync/interval-tree/issues/17
+      query = (range.first == range.last) ? range.first : range
+      matching_ranges_converted_to_exclusive = tree.search(query) || []
 
       # The interval tree converts interval endings to exclusive, so we need to restore the original
       matching_ranges = matching_ranges_converted_to_exclusive.map do |matching_range_converted_to_exclusive|
