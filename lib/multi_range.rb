@@ -229,7 +229,7 @@ class MultiRange
     ranges = [range_a, range_b]
     start = ranges.map(&:begin).max
     finish = ranges.map(&:end).min
-    if ranges.sort_by { |range| [range.end, range.exclude_end? ? 1 : 0] }.first.exclude_end?
+    if ranges.sort_by{|range| [range.end, range.exclude_end? ? 1 : 0] }.first.exclude_end?
       start...finish
     else
       start..finish
