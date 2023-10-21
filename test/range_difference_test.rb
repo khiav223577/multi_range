@@ -35,6 +35,25 @@ class RangeDifferenceTest < Minitest::Test
     )
   end
 
+  def test_when_full_cover_excluded_range_with_only_one_step
+    range1 = MultiRange.new([0..10])
+    range2 = MultiRange.new([0...11])
+
+    assert_before_and_after(
+      proc{ range1.ranges },
+      proc{ range1 -= 1..9 },
+      :before => [0..10],
+      :after  => [0...1, 10..10]
+    )
+
+    assert_before_and_after(
+      proc{ range2.ranges },
+      proc{ range2 -= 1..9 },
+      :before => [0...11],
+      :after  => [0...1, 10...11]
+    )
+  end
+
   def test_when_right_cover_excluded_range
     assert_before_and_after(
       proc{ @degree_range.ranges },
