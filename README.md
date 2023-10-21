@@ -9,9 +9,8 @@
 ## Supports
  
 - Ruby 2.3 ~ 2.7
-
-For Ruby 1.8.x and 1.9.x, please use multi_range < 2.
-For Ruby 2.0 ~ 2.2, please use multi_range <= 2.1.
+  - For Ruby 1.8.x and 1.9.x, please use multi_range < 2.
+  - For Ruby 2.0 ~ 2.2, please use multi_range <= 2.1.
 
 ## Installation
 
