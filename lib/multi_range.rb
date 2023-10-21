@@ -207,14 +207,14 @@ class MultiRange
     sub_range2_begin = if other.exclude_end?
                          other.end
                        else
-                         other.end + (other.end.is_a?(Float) ? Float::EPSILON : 1)
+                         other.end.is_a?(Float) ? other.end.next_float : other.end + 1
                        end
 
     sub_range2 = range.exclude_end? ? sub_range2_begin...range.end : sub_range2_begin..range.end
 
     sub_ranges = []
-    sub_ranges << sub_range1 if sub_range1.begin < sub_range1.end
-    sub_ranges << sub_range2 if sub_range2.begin < sub_range2.end
+    sub_ranges << sub_range1 if not empty_range?(sub_range1)
+    sub_ranges << sub_range2 if not empty_range?(sub_range2)
     return sub_ranges
   end
 
@@ -234,5 +234,9 @@ class MultiRange
     else
       start..finish
     end
+  end
+
+  def empty_range?(range)
+    range.begin > range.end || (range.begin == range.end && range.exclude_end?)
   end
 end
