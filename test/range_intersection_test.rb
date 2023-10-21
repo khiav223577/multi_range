@@ -120,4 +120,14 @@ class RangeIntersectionTest < Minitest::Test
       ).ranges
     end
   end
+
+  def test_inclusive_range_with_one_element
+    multi_range = MultiRange.new([10..10])
+    assert_before_and_after(
+      proc{ multi_range.ranges },
+      proc{ multi_range &= [10..20] },
+      :before => [10..10],
+      :after  => [10..10]
+    )
+  end
 end
