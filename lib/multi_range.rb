@@ -225,18 +225,26 @@ class MultiRange
     return true
   end
 
-  def intersect_two_ranges(range_a, range_b)
-    ranges = [range_a, range_b]
-    start = ranges.map(&:begin).max
-    finish = ranges.map(&:end).min
-    if ranges.sort_by{|range| [range.end, range.exclude_end? ? 1 : 0] }.first.exclude_end?
-      start...finish
-    else
-      start..finish
-    end
+  def intersect_two_ranges(range1, range2)
+    start_range = range_with_larger_start(range1, range2)
+    end_range = range_with_smaller_end(range1, range2)
+    return start_range.begin...end_range.end if end_range.exclude_end?
+    return start_range.begin..end_range.end
   end
 
   def empty_range?(range)
     range.begin > range.end || (range.begin == range.end && range.exclude_end?)
+  end
+
+  def range_with_larger_start(range1, range2)
+    return range1 if range1.begin > range2.begin
+    return range2
+  end
+
+  def range_with_smaller_end(range1, range2)
+    return range1 if range1.end < range2.end
+    return range2 if range1.end > range2.end
+    return range1 if range1.exclude_end?
+    return range2
   end
 end
