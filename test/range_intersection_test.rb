@@ -130,4 +130,28 @@ class RangeIntersectionTest < Minitest::Test
       :after  => [10..10]
     )
   end
+
+  def test_excluded_empty_range
+    multi_range1 = MultiRange.new([10..10])
+    multi_range2 = MultiRange.new([10...10])
+
+    assert_before_and_after(
+      proc{ multi_range1.ranges },
+      proc{ multi_range1 &= multi_range2 },
+      :before => [10..10],
+      :after  => []
+    )
+  end
+
+  def test_excluded_empty_range_reverse
+    multi_range1 = MultiRange.new([10..10])
+    multi_range2 = MultiRange.new([10...10])
+
+    assert_before_and_after(
+      proc{ multi_range2.ranges },
+      proc{ multi_range2 &= multi_range1 },
+      :before => [10...10],
+      :after  => [10...10]
+    )
+  end
 end
