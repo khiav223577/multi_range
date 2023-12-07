@@ -30,7 +30,7 @@ class MultiRange
       @is_float = ranges.is_float?
     else
       ranges = [ranges] if !ranges.is_a?(Array)
-      @ranges = ranges.map{|s| s.is_a?(Numeric) ? s..s : s }.sort_by(&:begin).freeze
+      @ranges = ranges.map{|s| s.is_a?(Numeric) ? s..s : s }.sort_by{|s| s.begin || -Float::INFINITY }.freeze
       @is_float = @ranges.any?{|range| range.begin.is_a?(Float) || range.end.is_a?(Float) }
     end
   end
@@ -99,12 +99,12 @@ class MultiRange
       # when this range is smaller than and not overlaps with `other`
       #      range          other
       #   |---------|    |---------|
-      next if other.begin > range.end
+      next if other.begin && range.end && other.begin > range.end
 
       # when this range is larger than and not overlaps with `other`
       #      other          range
       #   |---------|    |---------|
-      break if other.end < range.begin
+      break if other.end && range.begin && other.end < range.begin
 
       sub_ranges = possible_sub_ranges_of(range, other)
       new_ranges[idx + changed_size, 1] = sub_ranges
@@ -115,7 +115,8 @@ class MultiRange
       # -------------|
       #   other
       # ---------|
-      break if other.end <= range.end
+      break if range.end == nil
+      break if other.end && other.end <= range.end
     end
 
     return MultiRange.new(new_ranges)
@@ -206,26 +207,28 @@ class MultiRange
   end
 
   def possible_sub_ranges_of(range, other)
-    sub_range1 = range.begin...other.begin
+    sub_range1 = range.begin...other.begin if other.begin
 
-    sub_range2_begin = if other.exclude_end?
-                         other.end
-                       else
-                         other.end.is_a?(Float) ? other.end.next_float : other.end + 1
-                       end
+    if other.end
+      sub_range2_begin = if other.exclude_end?
+                           other.end
+                         else
+                           other.end.is_a?(Float) ? other.end.next_float : other.end + 1
+                         end
 
-    sub_range2 = range.exclude_end? ? sub_range2_begin...range.end : sub_range2_begin..range.end
+      sub_range2 = range.exclude_end? ? sub_range2_begin...range.end : sub_range2_begin..range.end
+    end
 
     sub_ranges = []
-    sub_ranges << sub_range1 if not empty_range?(sub_range1)
-    sub_ranges << sub_range2 if not empty_range?(sub_range2)
+    sub_ranges << sub_range1 if sub_range1 and not empty_range?(sub_range1)
+    sub_ranges << sub_range2 if sub_range2 and not empty_range?(sub_range2)
     return sub_ranges
   end
 
   def overlaps_with_range?(range)
     return false if @ranges.empty?
-    return false if range.begin > @ranges.last.end # larger than maximum
-    return false if range.end < @ranges.first.begin # smaller than minimum
+    return false if range.begin && @ranges.last.end && range.begin > @ranges.last.end # larger than maximum
+    return false if range.end && @ranges.first.begin && range.end < @ranges.first.begin # smaller than minimum
     return true
   end
 
@@ -237,7 +240,9 @@ class MultiRange
   end
 
   def empty_range?(range)
-    range.begin > range.end || (range.begin == range.end && range.exclude_end?)
+    return false if range.begin == nil
+    return false if range.end == nil
+    return range.begin > range.end || (range.begin == range.end && range.exclude_end?)
   end
 
   def range_with_larger_start(range1, range2)
