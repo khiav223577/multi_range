@@ -27,6 +27,7 @@ class MultiRange
       @ranges = ranges.ranges
       @is_float = ranges.is_float?
     else
+      ranges = [ranges] if !ranges.is_a?(Array)
       @ranges = ranges.map{|s| s.is_a?(Numeric) ? s..s : s }.sort_by(&:begin).freeze
       @is_float = @ranges.any?{|range| range.begin.is_a?(Float) || range.end.is_a?(Float) }
     end

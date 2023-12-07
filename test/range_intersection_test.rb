@@ -14,6 +14,15 @@ class RangeIntersectionTest < Minitest::Test
   def test_empty_range_left_hand_side
     assert_before_and_after(
       proc{ @empty_range.ranges },
+      proc{ @empty_range &= [5..10] },
+      :before => [],
+      :after  => []
+    )
+  end
+
+  def test_empty_range_left_hand_side_single_range
+    assert_before_and_after(
+      proc{ @empty_range.ranges },
       proc{ @empty_range &= 5..10 },
       :before => [],
       :after  => []
@@ -47,6 +56,15 @@ class RangeIntersectionTest < Minitest::Test
     )
   end
 
+  def test_range_includes_end_single_range
+    assert_before_and_after(
+      proc{ @day_range.ranges },
+      proc{ @day_range &= 0..6 },
+      :before => [1..7],
+      :after  => [1..6]
+    )
+  end
+
   def test_range_excludes_end
     assert_before_and_after(
       proc{ @day_range.ranges },
@@ -56,10 +74,28 @@ class RangeIntersectionTest < Minitest::Test
     )
   end
 
+  def test_range_excludes_end_single_range
+    assert_before_and_after(
+      proc{ @day_range.ranges },
+      proc{ @day_range &= 0...6 },
+      :before => [1..7],
+      :after  => [1...6]
+    )
+  end
+
   def test_overlapping_ranges_in_left_hand_side
     assert_before_and_after(
       proc{ @overlapping_day_ranges.ranges },
       proc{ @overlapping_day_ranges &= [2..4] },
+      :before => [1..4, 3..7],
+      :after  => [2..4]
+    )
+  end
+
+  def test_overlapping_ranges_in_left_hand_side_single_range
+    assert_before_and_after(
+      proc{ @overlapping_day_ranges.ranges },
+      proc{ @overlapping_day_ranges &= 2..4 },
       :before => [1..4, 3..7],
       :after  => [2..4]
     )
