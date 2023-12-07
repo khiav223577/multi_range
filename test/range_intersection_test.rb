@@ -190,4 +190,40 @@ class RangeIntersectionTest < Minitest::Test
       :after  => [10...10]
     )
   end
+
+  def test_unbounded_range_without_left_border
+    assert_before_and_after(
+      proc{ @day_range.ranges },
+      proc{ @day_range &= (..3) },
+      :before => [1..7],
+      :after  => [1..3]
+    )
+  end
+
+  def test_unbounded_range_without_left_border_excludes_end
+    assert_before_and_after(
+      proc{ @day_range.ranges },
+      proc{ @day_range &= (...3) },
+      :before => [1..7],
+      :after  => [1...3]
+    )
+  end
+
+  def test_unbounded_range_without_right_border
+    assert_before_and_after(
+      proc{ @day_range.ranges },
+      proc{ @day_range &= (4..) },
+      :before => [1..7],
+      :after  => [4..7]
+    )
+  end
+
+  def test_unbounded_range_without_right_border_excludes_end
+    assert_before_and_after(
+      proc{ @day_range.ranges },
+      proc{ @day_range &= (4...) },
+      :before => [1..7],
+      :after  => [4..7]
+    )
+  end
 end
