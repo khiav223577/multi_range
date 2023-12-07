@@ -47,6 +47,7 @@ class MultiRange
 
     @ranges.each do |range|
       next current_range = range if current_range == nil
+      next if current_range.end == nil
       next if range.end && range.end <= current_range.end
 
       if can_combine?(current_range, range, merge_same_value)
