@@ -3,6 +3,7 @@
 require 'multi_range/version'
 require 'roulette-wheel-selection'
 require 'interval_tree'
+require_relative 'patches/patch_interval_tree'
 
 if not Range.method_defined?(:size)
   warn "Please backports Range#size method to use multi_range gem.\n" \
@@ -16,6 +17,7 @@ if not Enumerable.method_defined?(:to_h)
        "You can use backports gem and add the following lines to your program:\n" \
        "require 'backports/2.1.0/enumerable/to_h'"
 end
+
 
 class MultiRange
   INDEX_WITH_DEFAULT = Object.new
@@ -61,7 +63,8 @@ class MultiRange
 
   def &(other)
     other_ranges = MultiRange.new(other).merge_overlaps.ranges
-    tree = IntervalTree::Tree.new(other_ranges)
+    tree = IntervalTree::Tree.new(other_ranges){|l, r| r ? (l...(r + 1)) : l... }
+
     intersected_ranges = merge_overlaps.ranges.flat_map do |range|
       # A workaround for the issue: https://github.com/greensync/interval-tree/issues/17
       query = (range.first == range.last) ? range.first : range
@@ -238,11 +241,15 @@ class MultiRange
   end
 
   def range_with_larger_start(range1, range2)
+    return range2 if range1.begin == nil
+    return range1 if range2.begin == nil
     return range1 if range1.begin > range2.begin
     return range2
   end
 
   def range_with_smaller_end(range1, range2)
+    return range2 if range1.end == nil
+    return range1 if range2.end == nil
     return range1 if range1.end < range2.end
     return range2 if range1.end > range2.end
     return range1 if range1.exclude_end?
