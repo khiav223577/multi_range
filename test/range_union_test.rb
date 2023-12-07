@@ -202,4 +202,13 @@ class RangeUnionTest < Minitest::Test
       :after  => [0..100, 200...]
     )
   end
+
+  def test_whole_infinite_range
+    assert_before_and_after(
+      proc{ @multi_range.ranges },
+      proc{ @multi_range |= MultiRange.new([..5, 3..]) },
+      :before => [0..100, 200..300, 500..600],
+      :after  => [..Float::INFINITY]
+    )
+  end
 end

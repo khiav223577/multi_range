@@ -10,7 +10,7 @@ module Patches
 
         intervals.each do |k|
           case
-          when k.end && k.end.to_r < x_center
+          when k.end && k.end != Float::INFINITY && k.end.to_r < x_center
             s_left << k
           when k.begin && k.begin.to_r > x_center
             s_right << k
@@ -64,19 +64,19 @@ module Patches
       def search_s_center(query)
         s_center.select do |k|
           begin_is_larger = k.begin && k.begin >= query.begin
-          end_is_smaller = k.end && k.end <= query.end
+          end_is_smaller = k.end && k.end != Float::INFINITY && k.end <= query.end
           (
             # k is entirely contained within the query
             begin_is_larger && end_is_smaller
           ) || (
             # k's start overlaps with the query
-            begin_is_larger && (k.begin < query.end)
+            begin_is_larger && (k.begin && k.begin < query.end)
           ) || (
             # k's end overlaps with the query
-            (k.end > query.begin) && (end_is_smaller)
+            (k.end && k.end > query.begin) && (end_is_smaller)
           ) || (
             # k is bigger than the query
-            (k.begin < query.begin) && (k.end > query.end)
+            (k.begin && k.begin < query.begin) && (k.end && k.end > query.end)
           )
         end
       end

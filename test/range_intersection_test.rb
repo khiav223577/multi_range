@@ -235,4 +235,13 @@ class RangeIntersectionTest < Minitest::Test
       :after  => [1...2, 5..7]
     )
   end
+
+  def test_whole_infinite_range
+    assert_before_and_after(
+      proc{ @day_range.ranges },
+      proc{ @multi_range &= MultiRange.new([..5, 3..]) },
+      :before => [1..7],
+      :after  => [1..7]
+    )
+  end
 end

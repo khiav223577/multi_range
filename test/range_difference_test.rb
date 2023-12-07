@@ -251,4 +251,13 @@ class RangeDifferenceTest < Minitest::Test
       :after  => [150...340]
     )
   end
+
+  def test_whole_infinite_range
+    assert_before_and_after(
+      proc{ @degree_range.ranges },
+      proc{ @degree_range -= MultiRange.new([..5, 3..]) },
+      :before => [0...360],
+      :after  => []
+    )
+  end
 end

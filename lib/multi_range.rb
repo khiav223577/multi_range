@@ -51,7 +51,9 @@ class MultiRange
       next if range.end && range.end <= current_range.end
 
       if can_combine?(current_range, range, merge_same_value)
-        current_range = range.exclude_end? ? current_range.begin...range.end : current_range.begin..range.end
+        end_val = range.end
+        end_val = Float::INFINITY if end_val == nil && current_range.begin == nil
+        current_range = range.exclude_end? ? current_range.begin...end_val : current_range.begin..end_val
       else
         new_ranges << current_range
         current_range = range
