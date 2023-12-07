@@ -208,54 +208,66 @@ class RangeDifferenceTest < Minitest::Test
   end
 
   def test_unbounded_range_without_left_border
+    skip if not SUPPORT_UNBOUNDED_RANGE_SYNTAX
+
     assert_before_and_after(
       proc{ @degree_range.ranges },
-      proc{ @degree_range -= (..125) },
+      proc{ @degree_range -= (nil..125) },
       :before => [0...360],
       :after  => [126...360]
     )
   end
 
   def test_unbounded_range_without_left_border_excludes_end
+    skip if not SUPPORT_UNBOUNDED_RANGE_SYNTAX
+
     assert_before_and_after(
       proc{ @degree_range.ranges },
-      proc{ @degree_range -= (...125) },
+      proc{ @degree_range -= (nil...125) },
       :before => [0...360],
       :after  => [125...360]
     )
   end
 
   def test_unbounded_range_without_right_border
+    skip if not SUPPORT_UNBOUNDED_RANGE_SYNTAX
+
     assert_before_and_after(
       proc{ @degree_range.ranges },
-      proc{ @degree_range -= (155..) },
+      proc{ @degree_range -= (155..nil) },
       :before => [0...360],
       :after  => [0...155]
     )
   end
 
   def test_unbounded_range_without_right_border_excludes_end
+    skip if not SUPPORT_UNBOUNDED_RANGE_SYNTAX
+
     assert_before_and_after(
       proc{ @degree_range.ranges },
-      proc{ @degree_range -= (155...) },
+      proc{ @degree_range -= (155...nil) },
       :before => [0...360],
       :after  => [0...155]
     )
   end
 
   def test_multiple_unbounded_ranges
+    skip if not SUPPORT_UNBOUNDED_RANGE_SYNTAX
+
     assert_before_and_after(
       proc{ @degree_range.ranges },
-      proc{ @degree_range -= MultiRange.new([350.., ..120, 340..., ...150]) },
+      proc{ @degree_range -= MultiRange.new([350..nil, nil..120, 340...nil, nil...150]) },
       :before => [0...360],
       :after  => [150...340]
     )
   end
 
   def test_whole_infinite_range
+    skip if not SUPPORT_UNBOUNDED_RANGE_SYNTAX
+
     assert_before_and_after(
       proc{ @degree_range.ranges },
-      proc{ @degree_range -= MultiRange.new([..5, 3..]) },
+      proc{ @degree_range -= MultiRange.new([nil..5, 3..nil]) },
       :before => [0...360],
       :after  => []
     )

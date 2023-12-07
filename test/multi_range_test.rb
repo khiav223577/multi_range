@@ -54,14 +54,16 @@ class MultiRangeTest < Minitest::Test
   end
 
   def test_merge_overlaps_with_unbounded_ranges
-    multi_range = MultiRange.new([6.., ..1, 5..., ...2])
-    assert_equal [...2, 5...], multi_range.merge_overlaps.ranges
+    skip if not SUPPORT_UNBOUNDED_RANGE_SYNTAX
 
-    multi_range = MultiRange.new([6..., ...1, 5.., ..2])
-    assert_equal [..2, 5..], multi_range.merge_overlaps.ranges
+    multi_range = MultiRange.new([6..nil, nil..1, 5...nil, nil...2])
+    assert_equal [nil...2, 5...nil], multi_range.merge_overlaps.ranges
 
-    multi_range = MultiRange.new([..5, 3..])
-    assert_equal [..Float::INFINITY], multi_range.merge_overlaps.ranges
+    multi_range = MultiRange.new([6...nil, nil...1, 5..nil, nil..2])
+    assert_equal [nil..2, 5..nil], multi_range.merge_overlaps.ranges
+
+    multi_range = MultiRange.new([nil..5, 3..nil])
+    assert_equal [nil..Float::INFINITY], multi_range.merge_overlaps.ranges
   end
 
   def test_size

@@ -18,7 +18,6 @@ if not Enumerable.method_defined?(:to_h)
        "require 'backports/2.1.0/enumerable/to_h'"
 end
 
-
 class MultiRange
   INDEX_WITH_DEFAULT = Object.new
 
@@ -66,7 +65,7 @@ class MultiRange
 
   def &(other)
     other_ranges = MultiRange.new(other).merge_overlaps.ranges
-    tree = IntervalTree::Tree.new(other_ranges){|l, r| r ? (l...(r + 1)) : l... }
+    tree = IntervalTree::Tree.new(other_ranges){|l, r| r ? (l...(r + 1)) : l...nil }
 
     intersected_ranges = merge_overlaps.ranges.flat_map do |range|
       # A workaround for the issue: https://github.com/greensync/interval-tree/issues/17

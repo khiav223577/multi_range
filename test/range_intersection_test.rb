@@ -192,54 +192,66 @@ class RangeIntersectionTest < Minitest::Test
   end
 
   def test_unbounded_range_without_left_border
+    skip if not SUPPORT_UNBOUNDED_RANGE_SYNTAX
+
     assert_before_and_after(
       proc{ @day_range.ranges },
-      proc{ @day_range &= (..3) },
+      proc{ @day_range &= (nil..3) },
       :before => [1..7],
       :after  => [1..3]
     )
   end
 
   def test_unbounded_range_without_left_border_excludes_end
+    skip if not SUPPORT_UNBOUNDED_RANGE_SYNTAX
+
     assert_before_and_after(
       proc{ @day_range.ranges },
-      proc{ @day_range &= (...3) },
+      proc{ @day_range &= (nil...3) },
       :before => [1..7],
       :after  => [1...3]
     )
   end
 
   def test_unbounded_range_without_right_border
+    skip if not SUPPORT_UNBOUNDED_RANGE_SYNTAX
+
     assert_before_and_after(
       proc{ @day_range.ranges },
-      proc{ @day_range &= (4..) },
+      proc{ @day_range &= (4..nil) },
       :before => [1..7],
       :after  => [4..7]
     )
   end
 
   def test_unbounded_range_without_right_border_excludes_end
+    skip if not SUPPORT_UNBOUNDED_RANGE_SYNTAX
+
     assert_before_and_after(
       proc{ @day_range.ranges },
-      proc{ @day_range &= (4...) },
+      proc{ @day_range &= (4...nil) },
       :before => [1..7],
       :after  => [4..7]
     )
   end
 
   def test_multiple_unbounded_ranges
+    skip if not SUPPORT_UNBOUNDED_RANGE_SYNTAX
+
     assert_before_and_after(
       proc{ @day_range.ranges },
-      proc{ @day_range &= MultiRange.new([6.., ..1, 5..., ...2]) },
+      proc{ @day_range &= MultiRange.new([6..nil, nil..1, 5...nil, nil...2]) },
       :before => [1..7],
       :after  => [1...2, 5..7]
     )
   end
 
   def test_whole_infinite_range
+    skip if not SUPPORT_UNBOUNDED_RANGE_SYNTAX
+
     assert_before_and_after(
       proc{ @day_range.ranges },
-      proc{ @multi_range &= MultiRange.new([..5, 3..]) },
+      proc{ @multi_range &= MultiRange.new([nil..5, 3..nil]) },
       :before => [1..7],
       :after  => [1..7]
     )
