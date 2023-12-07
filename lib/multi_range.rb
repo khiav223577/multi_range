@@ -3,6 +3,7 @@
 require 'multi_range/version'
 require 'roulette-wheel-selection'
 require 'interval_tree'
+require_relative 'patches/patch_interval_tree'
 
 if not Range.method_defined?(:size)
   warn "Please backports Range#size method to use multi_range gem.\n" \
@@ -28,7 +29,7 @@ class MultiRange
       @is_float = ranges.is_float?
     else
       ranges = [ranges] if !ranges.is_a?(Array)
-      @ranges = ranges.map{|s| s.is_a?(Numeric) ? s..s : s }.sort_by(&:begin).freeze
+      @ranges = ranges.map{|s| s.is_a?(Numeric) ? s..s : s }.sort_by{|s| s.begin || -Float::INFINITY }.freeze
       @is_float = @ranges.any?{|range| range.begin.is_a?(Float) || range.end.is_a?(Float) }
     end
   end
@@ -45,10 +46,13 @@ class MultiRange
 
     @ranges.each do |range|
       next current_range = range if current_range == nil
-      next if range.end <= current_range.end
+      next if current_range.end == nil
+      next if range.end && range.end <= current_range.end
 
       if can_combine?(current_range, range, merge_same_value)
-        current_range = range.exclude_end? ? current_range.begin...range.end : current_range.begin..range.end
+        end_val = range.end
+        end_val = Float::INFINITY if end_val == nil && current_range.begin == nil
+        current_range = range.exclude_end? ? current_range.begin...end_val : current_range.begin..end_val
       else
         new_ranges << current_range
         current_range = range
@@ -61,7 +65,8 @@ class MultiRange
 
   def &(other)
     other_ranges = MultiRange.new(other).merge_overlaps.ranges
-    tree = IntervalTree::Tree.new(other_ranges)
+    tree = IntervalTree::Tree.new(other_ranges){|l, r| r ? (l...(r + 1)) : l...nil }
+
     intersected_ranges = merge_overlaps.ranges.flat_map do |range|
       # A workaround for the issue: https://github.com/greensync/interval-tree/issues/17
       query = (range.first == range.last) ? range.first : range
@@ -96,12 +101,12 @@ class MultiRange
       # when this range is smaller than and not overlaps with `other`
       #      range          other
       #   |---------|    |---------|
-      next if other.begin > range.end
+      next if other.begin && range.end && other.begin > range.end
 
       # when this range is larger than and not overlaps with `other`
       #      other          range
       #   |---------|    |---------|
-      break if other.end < range.begin
+      break if other.end && range.begin && other.end < range.begin
 
       sub_ranges = possible_sub_ranges_of(range, other)
       new_ranges[idx + changed_size, 1] = sub_ranges
@@ -112,7 +117,8 @@ class MultiRange
       # -------------|
       #   other
       # ---------|
-      break if other.end <= range.end
+      break if range.end == nil
+      break if other.end && other.end <= range.end
     end
 
     return MultiRange.new(new_ranges)
@@ -191,6 +197,8 @@ class MultiRange
 
   # make sure that range1.begin <= range2.begin
   def can_combine?(range1, range2, merge_same_value)
+    return true if range1.end == nil
+    return true if range2.begin == nil
     return merge_same_value if range1.end == range2.begin and range1.exclude_end?
     return range1.end >= range2.begin if @is_float
     return range1.end + 1 >= range2.begin
@@ -203,26 +211,28 @@ class MultiRange
   end
 
   def possible_sub_ranges_of(range, other)
-    sub_range1 = range.begin...other.begin
+    sub_range1 = range.begin...other.begin if other.begin
 
-    sub_range2_begin = if other.exclude_end?
-                         other.end
-                       else
-                         other.end.is_a?(Float) ? other.end.next_float : other.end + 1
-                       end
+    if other.end
+      sub_range2_begin = if other.exclude_end?
+                           other.end
+                         else
+                           other.end.is_a?(Float) ? other.end.next_float : other.end + 1
+                         end
 
-    sub_range2 = range.exclude_end? ? sub_range2_begin...range.end : sub_range2_begin..range.end
+      sub_range2 = range.exclude_end? ? sub_range2_begin...range.end : sub_range2_begin..range.end
+    end
 
     sub_ranges = []
-    sub_ranges << sub_range1 if not empty_range?(sub_range1)
-    sub_ranges << sub_range2 if not empty_range?(sub_range2)
+    sub_ranges << sub_range1 if sub_range1 and not empty_range?(sub_range1)
+    sub_ranges << sub_range2 if sub_range2 and not empty_range?(sub_range2)
     return sub_ranges
   end
 
   def overlaps_with_range?(range)
     return false if @ranges.empty?
-    return false if range.begin > @ranges.last.end # larger than maximum
-    return false if range.end < @ranges.first.begin # smaller than minimum
+    return false if range.begin && @ranges.last.end && range.begin > @ranges.last.end # larger than maximum
+    return false if range.end && @ranges.first.begin && range.end < @ranges.first.begin # smaller than minimum
     return true
   end
 
@@ -234,15 +244,21 @@ class MultiRange
   end
 
   def empty_range?(range)
-    range.begin > range.end || (range.begin == range.end && range.exclude_end?)
+    return false if range.begin == nil
+    return false if range.end == nil
+    return range.begin > range.end || (range.begin == range.end && range.exclude_end?)
   end
 
   def range_with_larger_start(range1, range2)
+    return range2 if range1.begin == nil
+    return range1 if range2.begin == nil
     return range1 if range1.begin > range2.begin
     return range2
   end
 
   def range_with_smaller_end(range1, range2)
+    return range2 if range1.end == nil
+    return range1 if range2.end == nil
     return range1 if range1.end < range2.end
     return range2 if range1.end > range2.end
     return range1 if range1.exclude_end?

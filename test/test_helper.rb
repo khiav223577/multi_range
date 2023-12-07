@@ -45,3 +45,5 @@ def assert_performant
   b = Time.now
   assert(b - a < performance_budget_in_seconds)
 end
+
+SUPPORT_UNBOUNDED_RANGE_SYNTAX = Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.7')

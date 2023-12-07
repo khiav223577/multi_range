@@ -166,4 +166,59 @@ class RangeUnionTest < Minitest::Test
       :after  => [1.2..1.5, 1.7..1.8, 2.2..7.2]
     )
   end
+
+  def test_unbounded_range_without_left_border
+    skip if not SUPPORT_UNBOUNDED_RANGE_SYNTAX
+
+    assert_before_and_after(
+      proc{ @multi_range.ranges },
+      proc{ @multi_range |= nil..450 },
+      :before => [0..100, 200..300, 500..600],
+      :after  => [nil..450, 500..600]
+    )
+  end
+
+  def test_unbounded_range_without_left_border_excludes_end
+    skip if not SUPPORT_UNBOUNDED_RANGE_SYNTAX
+
+    assert_before_and_after(
+      proc{ @multi_range.ranges },
+      proc{ @multi_range |= nil...450 },
+      :before => [0..100, 200..300, 500..600],
+      :after  => [nil...450, 500..600]
+    )
+  end
+
+  def test_unbounded_range_without_right_border
+    skip if not SUPPORT_UNBOUNDED_RANGE_SYNTAX
+
+    assert_before_and_after(
+      proc{ @multi_range.ranges },
+      proc{ @multi_range |= 250..nil },
+      :before => [0..100, 200..300, 500..600],
+      :after  => [0..100, 200..nil]
+    )
+  end
+
+  def test_unbounded_range_without_right_border_excludes_end
+    skip if not SUPPORT_UNBOUNDED_RANGE_SYNTAX
+
+    assert_before_and_after(
+      proc{ @multi_range.ranges },
+      proc{ @multi_range |= 250...nil },
+      :before => [0..100, 200..300, 500..600],
+      :after  => [0..100, 200...nil]
+    )
+  end
+
+  def test_whole_infinite_range
+    skip if not SUPPORT_UNBOUNDED_RANGE_SYNTAX
+
+    assert_before_and_after(
+      proc{ @multi_range.ranges },
+      proc{ @multi_range |= MultiRange.new([nil..5, 3..nil]) },
+      :before => [0..100, 200..300, 500..600],
+      :after  => [nil..Float::INFINITY]
+    )
+  end
 end

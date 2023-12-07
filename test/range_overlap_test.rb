@@ -21,10 +21,20 @@ class RangeOverlapTest < Minitest::Test
 
   def test_when_right_cover_excluded_range
     assert_equal true, @degree_range.overlaps?(-10..20)
+
+    if SUPPORT_UNBOUNDED_RANGE_SYNTAX
+      assert_equal true, @degree_range.overlaps?(nil..20)
+      assert_equal true, @degree_range.overlaps?(nil...20)
+    end
   end
 
   def test_when_left_cover_excluded_range
     assert_equal true, @degree_range.overlaps?(330..400)
+
+    if SUPPORT_UNBOUNDED_RANGE_SYNTAX
+      assert_equal true, @degree_range.overlaps?(330..nil)
+      assert_equal true, @degree_range.overlaps?(330...nil)
+    end
   end
 
   def test_when_not_cover_excluded_range
@@ -61,5 +71,13 @@ class RangeOverlapTest < Minitest::Test
     val = 1.7 - Float::EPSILON
     assert_equal false, @float_range.overlaps?(1.6..val)
     assert_equal false, @float_range.overlaps?(1.6...val)
+  end
+
+  def test_unbounded_ranges
+    skip if not SUPPORT_UNBOUNDED_RANGE_SYNTAX
+
+    assert_equal true, MultiRange.new([nil..100]).overlaps?(MultiRange.new([50...nil]))
+    assert_equal true, MultiRange.new([nil..50]).overlaps?(MultiRange.new([50...nil]))
+    assert_equal false, MultiRange.new([nil...50]).overlaps?(MultiRange.new([50...nil]))
   end
 end
