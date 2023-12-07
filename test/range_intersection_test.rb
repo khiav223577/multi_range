@@ -191,6 +191,15 @@ class RangeIntersectionTest < Minitest::Test
     )
   end
 
+  def test_one_point_overlaps
+    assert_before_and_after(
+      proc{ @day_range.ranges },
+      proc{ @day_range &= 7..20 },
+      :before => [1..7],
+      :after  => [7..7]
+    )
+  end
+
   def test_unbounded_range_without_left_border
     skip if not SUPPORT_UNBOUNDED_RANGE_SYNTAX
 
@@ -232,6 +241,17 @@ class RangeIntersectionTest < Minitest::Test
       proc{ @day_range &= (4...nil) },
       :before => [1..7],
       :after  => [4..7]
+    )
+  end
+
+  def test_unbounded_range_without_right_border_full_covered
+    skip if not SUPPORT_UNBOUNDED_RANGE_SYNTAX
+
+    assert_before_and_after(
+      proc{ @day_range.ranges },
+      proc{ @day_range &= (0..nil) },
+      :before => [1..7],
+      :after  => [1..7]
     )
   end
 

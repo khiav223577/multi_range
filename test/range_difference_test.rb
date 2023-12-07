@@ -134,6 +134,15 @@ class RangeDifferenceTest < Minitest::Test
     )
   end
 
+  def test_one_point_overlaps
+    assert_before_and_after(
+      proc{ @multi_range.ranges },
+      proc{ @multi_range -= 600..800 },
+      :before => [0..100, 200..300, 500..600],
+      :after  => [0..100, 200..300, 500...600]
+    )
+  end
+
   def test_multi_range
     assert_before_and_after(
       proc{ @multi_range.ranges },

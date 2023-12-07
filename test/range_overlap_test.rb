@@ -49,6 +49,11 @@ class RangeOverlapTest < Minitest::Test
     assert_equal false, @degree_range.overlaps?(370..400)
   end
 
+  def test_one_point_overlaps
+    assert_equal true, @multi_range.overlaps?(600..800)
+    assert_equal false, @degree_range.overlaps?(360..800)
+  end
+
   def test_multi_range
     assert_equal true, @multi_range.overlaps?(50..550)
   end
@@ -79,5 +84,11 @@ class RangeOverlapTest < Minitest::Test
     assert_equal true, MultiRange.new([nil..100]).overlaps?(MultiRange.new([50...nil]))
     assert_equal true, MultiRange.new([nil..50]).overlaps?(MultiRange.new([50...nil]))
     assert_equal false, MultiRange.new([nil...50]).overlaps?(MultiRange.new([50...nil]))
+  end
+
+  def test_covered_by_unbounded_range
+    skip if not SUPPORT_UNBOUNDED_RANGE_SYNTAX
+
+    assert_equal true, MultiRange.new([1..7]).overlaps?(MultiRange.new([0...nil]))
   end
 end
