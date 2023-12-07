@@ -1,5 +1,8 @@
 ## Change Log
 
+### [v2.2.2](https://github.com/khiav223577/multi_range/compare/v2.2.1...v2.2.2) 2023/12/07
+- [#40](https://github.com/khiav223577/multi_range/pull/40) Enhance: do not need to flatten ranges when ranges is not array (@khiav223577)
+
 ### [v2.2.1](https://github.com/khiav223577/multi_range/compare/v2.2.0...v2.2.1) 2023/10/28
 - [#35](https://github.com/khiav223577/multi_range/pull/35) Fix: intersection with excluded empty range contains extra element (@khiav223577)
 
