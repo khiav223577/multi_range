@@ -206,4 +206,40 @@ class RangeDifferenceTest < Minitest::Test
       :after  => [1.2..1.5]
     )
   end
+
+  def test_unbounded_range_without_left_border
+    assert_before_and_after(
+      proc{ @degree_range.ranges },
+      proc{ @degree_range -= (..125) },
+      :before => [0...360],
+      :after  => [126...360]
+    )
+  end
+
+  def test_unbounded_range_without_left_border_excludes_end
+    assert_before_and_after(
+      proc{ @degree_range.ranges },
+      proc{ @degree_range -= (...125) },
+      :before => [0...360],
+      :after  => [125...360]
+    )
+  end
+
+  def test_unbounded_range_without_right_border
+    assert_before_and_after(
+      proc{ @degree_range.ranges },
+      proc{ @degree_range -= (155..) },
+      :before => [0...360],
+      :after  => [0...155]
+    )
+  end
+
+  def test_unbounded_range_without_right_border_excludes_end
+    assert_before_and_after(
+      proc{ @degree_range.ranges },
+      proc{ @degree_range -= (155...) },
+      :before => [0...360],
+      :after  => [0...155]
+    )
+  end
 end
