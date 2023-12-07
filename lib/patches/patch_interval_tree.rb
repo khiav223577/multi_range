@@ -33,7 +33,7 @@ module Patches
         else
           point_search(top_node, query, [], options[:unique])
         end
-          .sort_by{|x| [x.begin, x.end] }
+          .sort_by{|x| [x.begin || -Float::INFINITY, x.end || Float::INFINITY] }
       end
 
       private

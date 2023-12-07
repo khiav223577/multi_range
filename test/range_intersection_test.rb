@@ -226,4 +226,13 @@ class RangeIntersectionTest < Minitest::Test
       :after  => [4..7]
     )
   end
+
+  def test_multiple_unbounded_ranges
+    assert_before_and_after(
+      proc{ @day_range.ranges },
+      proc{ @day_range &= MultiRange.new([6.., ..1, 5..., ...2]) },
+      :before => [1..7],
+      :after  => [1...2, 5..7]
+    )
+  end
 end

@@ -47,7 +47,7 @@ class MultiRange
 
     @ranges.each do |range|
       next current_range = range if current_range == nil
-      next if range.end <= current_range.end
+      next if range.end && range.end <= current_range.end
 
       if can_combine?(current_range, range, merge_same_value)
         current_range = range.exclude_end? ? current_range.begin...range.end : current_range.begin..range.end
@@ -195,6 +195,8 @@ class MultiRange
 
   # make sure that range1.begin <= range2.begin
   def can_combine?(range1, range2, merge_same_value)
+    return true if range1.end == nil
+    return true if range2.begin == nil
     return merge_same_value if range1.end == range2.begin and range1.exclude_end?
     return range1.end >= range2.begin if @is_float
     return range1.end + 1 >= range2.begin

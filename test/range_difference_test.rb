@@ -242,4 +242,13 @@ class RangeDifferenceTest < Minitest::Test
       :after  => [0...155]
     )
   end
+
+  def test_multiple_unbounded_ranges
+    assert_before_and_after(
+      proc{ @degree_range.ranges },
+      proc{ @degree_range -= MultiRange.new([350.., ..120, 340..., ...150]) },
+      :before => [0...360],
+      :after  => [150...340]
+    )
+  end
 end
