@@ -1,5 +1,9 @@
 ## Change Log
 
+### [v2.2.3](https://github.com/khiav223577/multi_range/compare/v2.2.2...v2.2.3) 2023/12/08
+- [#42](https://github.com/khiav223577/multi_range/pull/42) Fix: edge case of intersection when two range have only one point overlaps (@khiav223577)
+- [#41](https://github.com/khiav223577/multi_range/pull/41) Support unbounded ranges (@khiav223577)
+
 ### [v2.2.2](https://github.com/khiav223577/multi_range/compare/v2.2.1...v2.2.2) 2023/12/07
 - [#40](https://github.com/khiav223577/multi_range/pull/40) Enhance: do not need to flatten ranges when ranges is not array (@khiav223577)
 
