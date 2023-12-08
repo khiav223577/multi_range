@@ -62,22 +62,24 @@ module Patches
 
     module ForNode
       def search_s_center(query)
-        s_center.select do |k|
-          begin_is_larger = k.begin && k.begin >= query.begin
-          end_is_smaller = k.end && k.end != Float::INFINITY && k.end <= query.end
-          (
-            # k is entirely contained within the query
-            begin_is_larger && end_is_smaller
-          ) || (
-            # k's start overlaps with the query
-            begin_is_larger && (k.begin && k.begin < query.end)
-          ) || (
-            # k's end overlaps with the query
-            (k.end && k.end > query.begin) && (end_is_smaller)
-          ) || (
-            # k is bigger than the query
-            (k.begin && k.begin < query.begin) && (k.end && k.end > query.end)
-          )
+        s_center.select do |range|
+          # when this range is smaller than and not overlaps with `query`
+          #      range          query
+          #   |---------|    |---------|
+          if query.begin and range.end
+            next false if query.begin > range.end
+            next false if query.begin == range.end and range.exclude_end?
+          end
+
+          # when this range is larger than and not overlaps with `query`
+          #      query          range
+          #   |---------|    |---------|
+          if query.end and range.begin
+            next false if query.end < range.begin
+            next false if query.end == range.begin and query.exclude_end?
+          end
+
+          next true
         end
       end
     end
