@@ -187,7 +187,7 @@ class RangeIntersectionTest < Minitest::Test
       proc{ multi_range2.ranges },
       proc{ multi_range2 &= multi_range1 },
       :before => [10...10],
-      :after  => [10...10]
+      :after  => []
     )
   end
 
