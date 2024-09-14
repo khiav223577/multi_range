@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = 'multi_range'
   spec.version       = MultiRange::VERSION
   spec.authors       = ['khiav reoy']
-  spec.email         = ['mrtmrt15xn@yahoo.com.tw']
+  spec.email         = ['khiav223577@gmail.com']
 
   spec.summary       = 'Allow you to manipulate a group of ranges.'
   spec.description   = 'Allow you to manipulate a group of ranges. Such as merging overlapping ranges, doing ranges union, intersection, difference, and so on.'
